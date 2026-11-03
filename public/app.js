@@ -1,256 +1,177 @@
-/* AI 아이디어 발굴 프롬프트 스튜디오 — 정적 웹앱 (빌드 불필요) */
+/* AI 아이디어 발굴 프롬프트 스튜디오 v2
+ * 원칙: ① 먼저 내가 생각해서 쓴다 → ② 내 답이 들어간 프롬프트로 AI 코치에게 묻는다 → ③ AI의 질문에 답하며 내 손으로 정리한다
+ * 90분: 오리엔테이션 5 + 불편 찾기 15 + 문제 정의 20 + 아이디어 20 + 돈과 첫 고객 20 + 정리 10
+ */
 (function () {
   'use strict';
 
-  /* ---------- 단계 ---------- */
-  var STAGES = {
-    1: { name: '1단계 문제 정의' },
-    2: { name: '2단계 아이디어 도출' },
-    3: { name: '3단계 비즈니스 모델' },
-    4: { name: '보너스 발표 준비' }
-  };
+  var STAGES = { 1: '1단계 문제 정의', 2: '2단계 아이디어 도출', 3: '3단계 비즈니스 모델' };
 
-  /* ---------- 공통 빈칸 ---------- */
+  /* ---------- 질문/빈칸 정의 ---------- */
+  // q: 화면에 보이는 질문, label: 프롬프트에 비었을 때 표시되는 이름, ph: 막막할 때 보는 예시
+  // theme 별 질문은 {1:[q,ph],2:[q,ph]}
   var F = {
     theme: { label: '해커톤 주제', type: 'select', options: [['1', '일상 속 불편을 창업 아이디어로'], ['2', '스토리텔링 기반의 콘텐츠 창업 아이디어']] },
-    who:   { label: '나는 누구', hint: '예) 대학생, 취준생, 직장 2년 차', ph: '대학생' },
-    field: { label: '관심 분야', hint: '예) 자취 생활, 자기소개와 취업, 반려동물', ph: '자취 생활' },
-    persona: { label: '인터뷰할 가상 고객', hint: '나이·역할을 구체적으로', ph: '반찬 솜씨 좋은 55세 동네 주부' },
-    topic: { label: '인터뷰 주제', hint: '그 사람이 하는 일/겪는 일', ph: '반찬을 만들어 파는 일' },
-    memo:  { label: '실제 인터뷰 메모', hint: '진짜 사람에게 들은 말을 그대로', type: 'area', ph: '예) 반찬 나눠 준 적은 많은데 팔아 본 적은 없다. 주문 받고 돈 받는 게 제일 걸린다.' },
-    pain:  { label: '내가 고른 불편', hint: '프롬프트 1 결과에서 번호 1~3개를 묶어서', type: 'area', ph: '예) ①⑤⑭를 묶은 \'평일 저녁 끼니\'' },
-    problem: { label: '고른 문제 정의 문장', hint: '프롬프트 3에서 1위 문장', type: 'area', ph: '예) 자취생은 알바 끝난 평일 저녁 끼니를 챙기려 할 때 시간이 없고 1인분 배달은 비싸 거르거나 편의점으로 때운다.' },
-    idea:  { label: '선택한 아이디어', hint: '프롬프트 5에서 1위(또는 숨은 후보)', type: 'area', ph: '예) 9번 동네 반찬 요리인 ↔ 자취생 주간 구독' }
+    who: { label: '나는 누구', q: '나는 누구인가요?', hint: '한 단어로', type: 'text', ph: '예) 대학생, 취준생, 직장 2년 차' },
+
+    a1: { label: '귀찮았던 일', by: { 1: ['이번 주 나를 가장 귀찮게 하거나 짜증나게 한 일은 무엇이었나요?', '예) 알바 끝나고 집에 오면 밥 차리는 게 귀찮아서 편의점으로 때웠다'], 2: ['내 이야기를 남에게 전해야 하는데 입이 안 떨어졌던 순간은 언제였나요?', '예) 면접에서 자기소개를 하려는데 자랑 같아서 말이 막혔다'] } },
+    a2: { label: '아까웠던 순간', by: { 1: ['돈이나 시간이 아깝다고 느낀 순간은 언제였나요?', '예) 1인분 배달인데 배달비가 음식값만큼 나왔다'], 2: ['"이 이야기는 꼭 알려야 하는데" 싶었던 사람·가게·장소가 있나요?', '예) 30년 된 동네 국밥집인데 아무도 이야기를 모른다'] } },
+    a3: { label: '주변의 불평', by: { 1: ['주변 사람(가족·친구·동네 어른)이 자주 불평하는 것은 무엇인가요?', '예) 엄마가 "반찬을 해도 먹을 사람이 없다"고 하신다'], 2: ['광고나 영상을 보며 "왜 이렇게 재미없지?" 느낀 적이 있나요?', '예) 지역 축제 홍보 영상이 다 똑같아서 기억에 안 남는다'] } },
+    pain: { label: '내가 고른 불편', q: '내가 풀고 싶은 불편 한 가지를 골라 보세요.', hint: '내 답 + AI가 던진 질문을 생각해 본 뒤에', type: 'area', ph: '예) 알바 끝난 평일 저녁, 혼자 끼니를 챙기는 일' },
+
+    memo: { label: '인터뷰 메모', q: '옆 사람(또는 가족·친구)에게 물어보고 들은 말을 그대로 적어 보세요.', hint: '① 최근에 그런 일 겪은 적 있어요? ② 그때 어떻게 해결했어요? ③ 그 방법의 제일 불편한 점은요?', type: 'area', ph: '예) "반찬 나눠 준 적은 많은데 팔아 본 적은 없어. 주문 받고 돈 받는 게 제일 걸려."' },
+    p_who: { label: '누가', q: '누가 힘든가요?', type: 'text', ph: '예) 알바하는 자취 대학생' },
+    p_when: { label: '언제', q: '언제, 어떤 상황에서 힘든가요?', type: 'text', ph: '예) 알바가 끝나고 밤 9시에 집에 왔을 때' },
+    p_why: { label: '무엇 때문에', q: '무엇 때문에 힘든가요?', type: 'text', ph: '예) 시간이 없고, 1인분 배달은 비싸서' },
+    p_now: { label: '지금은 어떻게', q: '지금은 어떻게 버티고 있나요?', type: 'text', ph: '예) 편의점 도시락이나 라면으로 때운다' },
+    problem: { label: '나의 문제 한 문장', q: 'AI의 질문을 받고 더 선명해진, 나의 문제를 한 문장으로 써 보세요.', hint: '"누가 / 언제 / 무엇 때문에 / 지금은 어떻게"가 다 들어가면 좋아요', type: 'area', ph: '예) 알바하는 자취생은 늦은 밤 끼니를 챙기려 할 때 시간이 없고 1인분 배달이 비싸 편의점으로 때운다.' },
+
+    i1: { label: '내 아이디어 1', q: 'AI 없이 내 힘으로, 이 문제를 풀 방법 3개를 먼저 적어 보세요. (1)', type: 'text', ph: '예) 같은 동네 사람끼리 반찬을 나눠 먹는 모임' },
+    i2: { label: '내 아이디어 2', q: '(2)', type: 'text', ph: '예) 남은 식재료로 10분 요리를 알려주는 앱' },
+    i3: { label: '내 아이디어 3', q: '(3)', type: 'text', ph: '예) 원룸 건물 1층 무인 반찬 냉장고' },
+    d1: { label: '다른 업종에서', q: '다른 업종의 방식을 빌려온다면? (구독, 마감 할인, 1:1 코칭, 무인 판매…)', hint: '막히면 건너뛰어도 돼요', type: 'text', opt: true, ph: '예) 꽃 구독처럼 반찬을 매주 정기 배송' },
+    d2: { label: '정반대로', q: '정반대로 뒤집으면 어떨까요? (고객과 공급자를 바꾸기, 문제를 아예 없애기…)', hint: '막히면 건너뛰어도 돼요', type: 'text', opt: true, ph: '예) 학생이 요리사가 되어 중장년에게 판다' },
+    d3: { label: '사람과 사람', q: '사람과 사람을 이어준다면 누구와 누구를 잇고 싶나요?', hint: '막히면 건너뛰어도 돼요', type: 'text', opt: true, ph: '예) 반찬 솜씨 좋은 동네 어른 ↔ 자취생' },
+    idea: { label: '선택한 아이디어', q: '우리 팀에 가져갈 아이디어 하나를 골라 써 보세요.', hint: '내 아이디어든, AI가 낸 것이든 "내가 끌리는 것"으로', type: 'area', ph: '예) 동네 반찬 요리인과 자취생을 잇는 주간 반찬 구독' },
+    idea_diff: { label: '다른 점', q: '이미 있는 서비스와 무엇이 다른가요?', type: 'text', ph: '예) 배달앱은 음식점, 우리는 동네 집밥 요리인' },
+
+    m1: { label: '돈 내는 사람', q: '누가 돈을 내나요? (쓰는 사람과 다를 수 있어요)', type: 'text', ph: '예) 학생 본인 또는 걱정하는 부모님' },
+    m2: { label: '지금 쓰는 돈·시간', q: '그 사람은 지금 이 문제에 돈과 시간을 얼마나 쓰고 있나요?', type: 'text', ph: '예) 한 끼 7천 원 도시락을 주 5회 (정확하지 않으면 "모름")' },
+    m3: { label: '낼 금액', q: '얼마면 낼 것 같나요? 왜 그렇게 생각하나요?', type: 'text', ph: '예) 한 끼 5천 원 정도. 편의점 도시락보다 싸야 하니까 (가정)' },
+    m4: { label: '첫 고객 10명', q: '첫 고객 10명은 어디에서 만날 수 있나요?', type: 'text', ph: '예) 우리 학과 단체 대화방' },
+    weak: { label: '약점과 보완', q: '가장 아픈 약점 한 가지와, 내가 생각한 보완 방법을 써 보세요.', hint: '모르면 "멘토에게 물어볼 질문"으로 적어도 좋아요', type: 'area', ph: '예) 집에서 만든 음식은 위생 신고가 필요하다 → 신고된 공유주방 이용 가능한지 멘토에게 질문' },
+
+    o_who: { label: '고객', q: '누구를 위한 서비스인가요?', type: 'text', ph: '예) 알바하는 자취 대학생' },
+    o_name: { label: '서비스 이름', q: '서비스 이름(임시)은 무엇인가요?', type: 'text', ph: '예) 동네밥상' },
+    o_ai: { label: 'AI가 하는 일', q: 'AI가 무엇을 해 주나요?', type: 'text', ph: '예) 예산과 입맛에 맞춰 주간 반찬을 추천' },
+    oneliner: { label: '최종 한 줄 소개', q: '내 손으로 다듬은 최종 한 줄 소개를 써 보세요.', hint: '이 문장이 내일 발표의 첫 문장이 됩니다', type: 'area', ph: '예) 자취 대학생을 위한 \'동네밥상\'으로, AI가 예산과 입맛에 맞춰 반찬을 추천해 평일 저녁 끼니 문제를 해결한다.' }
   };
 
-  /* ---------- 프롬프트 9개 + 보너스 ---------- */
+  /* ---------- 단계 ---------- */
   var P = [
     {
-      id: 1, stage: 1, title: '되묻기와 불편 15개',
-      lead: 'AI가 먼저 <b>나에게 되묻고</b>, 내 상황에 맞는 일상 속 불편을 <b>5가지 감정</b>으로 나눠 15개 이상 찾아줍니다.',
-      fields: ['theme', 'who', 'field'],
-      tip: '<b>첫 프롬프트만 새 대화창</b>에서 시작하세요. 이후 2~9번은 같은 대화창에 이어서 붙여넣어야 AI가 앞 내용을 기억합니다.',
+      id: 1, stage: 1, min: 15, title: '내 일상에서 불편 찾기',
+      lead: '아이디어는 <b>내 일상</b>에서 나옵니다. AI에게 묻기 전에, 먼저 <b>내 머릿속</b>을 꺼내 봅시다.',
+      before: ['who', 'a1', 'a2', 'a3'], theme: true,
+      aiTitle: 'AI 코치에게 묻기',
+      aiHelp: 'AI는 정답을 주는 사람이 아니라 <b>내 생각을 넓혀 주는 코치</b>입니다. 답은 내가 씁니다.',
       template:
-        '나는 {{who}}이고, 관심 있는 분야는 {{field}}야.\n{{theme_line}}\n\n' +
-        '일상에서 겪는 불편을 찾도록 도와줘. 아래 순서로 진행해.\n\n' +
-        '1) 먼저 나에 대해 꼭 필요한 질문을 딱 2개만 해줘. 내가 답할 때까지 기다려.\n' +
-        '2) 내 답을 들은 뒤, 아래 5가지 감정으로 나눠 불편을 모두 15개 이상 찾아줘.\n' +
-        '   - 귀찮다 / 아깝다 / 불안하다 / 막막하다\n' +
-        '   - 세대가 함께 ★ (서로 다른 세대가 같은 문제를 겪거나 서로를 도울 수 있는 불편)\n' +
-        '3) 각 불편은 "언제, 누가, 무엇 때문에 힘든지"가 보이게 한 문장으로 써줘.\n' +
-        '4) 표로 정리해줘. 열은 "감정 | 불편(번호 포함)"으로 해줘.\n' +
-        '5) 마지막에 가장 흥미로운 불편 3개를 추천하고 이유를 한 줄씩 써줘.',
-      banner: '불편 번호를 1~3개 골라 <em>하나의 주제로 묶으세요</em> — 다음 프롬프트가 거기서 시작합니다',
-      example: {
-        src: '트랙 A · 대학생 / 자취 생활',
-        html: '<p>AI가 먼저 되물음: “① 자취한 지 얼마나 됐고 어디 사세요? ② 하루 중 가장 바쁜 시간대는?” → 참가자: “대학가 원룸 1년, 평일 저녁 6~9시 수업과 알바.”</p>' +
-          '<div class="tblwrap"><table><tr><th>감정</th><th>AI가 찾은 불편 (일부)</th></tr>' +
-          '<tr><td>귀찮다</td><td>① 알바 끝나고 밥 차리는 게 귀찮아 라면·편의점으로 때운다</td></tr>' +
-          '<tr><td>아깝다</td><td>⑤ 1인분 배달은 배달비·최소주문 때문에 2인분을 시켜 남긴다</td></tr>' +
-          '<tr><td>세대가 함께 ★</td><td>⑭ 자취생은 집밥 반찬이 그립고, 동네 중장년은 반찬 솜씨가 있지만 나눌 데가 없다</td></tr></table></div>' +
-          '<p>고른 불편: ①⑤⑭를 묶은 <b>‘평일 저녁 끼니’</b></p>'
-      }
+        '나는 {{who}}이고, 일상 속 불편을 찾아 창업 아이디어를 만들려고 해. {{theme_line}}\n\n' +
+        '아래는 내가 직접 떠올린 거야.\n' +
+        '1) {{a1_q}}\n   → {{a1}}\n' +
+        '2) {{a2_q}}\n   → {{a2}}\n' +
+        '3) {{a3_q}}\n   → {{a3}}\n\n' +
+        '너는 정답을 대신 정해 주는 사람이 아니라, 질문으로 내 생각을 이끄는 코치야. 아래 순서로 해줘.\n' +
+        '① 내가 쓴 것들에서 공통점이나 숨은 패턴이 보이면 한두 줄로 짚어줘.\n' +
+        '② 내가 놓쳤을 만한 불편을 아래 5가지 감정에서 하나씩, 총 5개만 추가로 제안해줘.\n' +
+        '   귀찮다 / 아깝다 / 불안하다 / 막막하다 / 세대가 함께 ★(서로 다른 세대가 같은 문제를 겪거나 서로 도울 수 있는 불편)\n' +
+        '③ 마지막으로 내가 스스로 답해 볼 질문을 딱 2개만 해줘. 그 질문에 대한 답은 내가 쓸 거니까 네가 대신 답하지 마.',
+      after: ['pain'],
+      tip: '<b>막막하면</b> 칸 안의 회색 예시를 참고하세요. 한 줄만 써도 충분합니다. 첫 프롬프트만 <b>새 대화창</b>에서 시작하고, 이후는 같은 대화창에 이어서 붙여넣으세요.',
+      banner: '불편은 <em>내가 직접 겪었거나 본 것</em>일 때 가장 생생합니다',
+      example: '<p>AI의 질문 예: “이 중 누가 가장 자주, 가장 크게 겪을까요?” → 참가자: “알바하는 자취생이 매일 겪어요.” → 고른 불편: <b>평일 저녁 끼니</b></p>'
     },
     {
-      id: 2, stage: 1, title: '가상 고객 인터뷰',
-      lead: 'AI가 <b>가상 고객 역할</b>을 맡고, 내가 인터뷰어가 됩니다. 인터뷰가 끝나면 AI가 <b>핵심 답·지어낸 숫자·다시 물어볼 질문</b>을 정리합니다.',
-      fields: ['persona', 'topic'],
-      tip: '<b>질문 예시</b><ul><li>최근에 ○○를 해 본 적 있으세요?</li><li>하려는데 뭐가 걸리세요?</li><li>지금은 어떻게 해결하고 계세요?</li></ul>끝낼 땐 <b>“인터뷰 끝”</b>이라고 입력하세요.',
+      id: 2, stage: 1, min: 20, title: '진짜 사람에게 듣고 문제 정의하기',
+      lead: '진짜 문제는 <b>책상 위가 아니라 사람</b>에게 있습니다. 옆 사람에게 3분만 물어보고, 문제를 <b>내 문장</b>으로 정의해 봅시다.',
+      before: ['memo', 'p_who', 'p_when', 'p_why', 'p_now'],
+      aiTitle: 'AI 코치에게 점검받기',
+      aiHelp: 'AI가 문장을 대신 써 주지 않고, <b>내 문장의 빈틈</b>을 질문으로 짚어 줍니다.',
       template:
-        '지금부터 너는 {{persona}}야. 내가 {{topic}}에 대해 인터뷰할게.\n\n' +
-        '규칙:\n' +
-        '- 실제 사람처럼 구어체로, 한 번에 2~4문장으로만 답해.\n' +
-        '- 내가 묻지 않은 것을 먼저 설명하지 마. 한 번에 한 질문에만 답해.\n' +
-        '- 귀찮은 점, 걱정되는 점, 돈 이야기도 솔직하게 말해.\n' +
-        '- 내가 "인터뷰 끝"이라고 하면 역할에서 빠져나와 아래를 정리해줘.\n' +
-        '  ① 인터뷰에서 드러난 핵심 불편 3가지\n' +
-        '  ② 네가 지어낸 숫자나 사실 (가설이라고 표시)\n' +
-        '  ③ 진짜 사람에게 꼭 다시 물어봐야 할 질문 3개\n\n' +
-        '준비되면 "네, 시작하세요"라고만 답해줘.',
-      banner: 'AI 고객이 말한 숫자는 <em>가설</em> — 진짜 숫자는 <em>테이블의 사람</em>에게서 얻으세요',
-      example: {
-        src: '트랙 A · 반찬 솜씨 좋은 55세 동네 주부',
-        html: '<div class="tblwrap"><table><tr><th>참가자 질문</th><th>AI(주부 역할) 답</th></tr>' +
-          '<tr><td>팔아 보실 생각은요? 뭐가 걸리세요?</td><td>어디다 내놓아야 하는지 모르겠고, 위생 신고니 뭐니 복잡하다 그러고. 가격도, 몇 개 만들어야 할지도 모르겠어. 남으면 다 버리는 거잖아.</td></tr>' +
-          '<tr><td>하루에 얼마나 만드실 수 있어요?</td><td>오전에 서너 시간이면 반찬 네댓 가지, 열 명분은 하지.</td></tr></table></div>' +
-          '<p class="src">※ “서너 시간, 열 명분”은 AI가 지어낸 숫자입니다.</p>'
-      }
-    },
-    {
-      id: 3, stage: 1, title: '문제 정의 문장 3개',
-      lead: '진짜 인터뷰에서 들은 말을 넣어 <b>문제를 한 문장</b>으로 정의하고, 3가지 기준으로 <b>점수</b>를 매겨 가장 센 문장을 고릅니다.',
-      fields: ['pain', 'memo'],
-      tip: '인터뷰 메모는 <b>옆 사람에게 직접 들은 말</b>을 그대로 적으세요. 그래야 AI가 지어내지 않고 사실을 바탕으로 문장을 만듭니다.',
-      template:
-        '이제 문제를 한 문장으로 정의하자.\n\n' +
-        '[내가 고른 불편]\n{{pain}}\n\n' +
-        '[실제 인터뷰 메모]\n{{memo}}\n\n' +
-        '위 내용을 바탕으로 문제 정의 문장을 3개 만들어줘.\n' +
-        '형식: "[누구]는 [무엇을 하려 할 때] [어떤 이유로] 어렵다. 지금은 [현재 대안]으로 버티지만 [그 대안의 한계]가 있다."\n\n' +
-        '각 문장을 아래 기준으로 1~5점으로 채점해 표로 보여줘.\n' +
-        '- 많은가: 그런 사람이 많은가\n' +
-        '- 자주·크게: 자주 겪거나 크게 아픈가\n' +
-        '- 돈·시간: 이미 돈이나 시간을 쓰고 있는가\n\n' +
-        '합계가 가장 높은 문장을 골라 이유를 한 줄로 말해줘.\n' +
+        '내가 풀고 싶은 불편은 이거야.\n{{pain}}\n\n' +
+        '[진짜 사람에게 직접 들은 말]\n{{memo}}\n\n' +
+        '[내가 쓴 문제 정의 초안]\n' +
+        '- 누가: {{p_who}}\n- 언제: {{p_when}}\n- 무엇 때문에: {{p_why}}\n- 지금은 어떻게 버티나: {{p_now}}\n\n' +
+        '너는 날카로운 코치야. 문장을 대신 고쳐 쓰지 말고 아래 순서로 해줘.\n' +
+        '① 내 초안을 아래 3가지 기준으로 1~5점으로 채점하고 표로 보여줘. (많은가 / 자주·크게 겪는가 / 이미 돈·시간을 쓰고 있는가)\n' +
+        '② 가장 약한 부분 하나를 짚고, 왜 약한지 한 줄로 설명해줘.\n' +
+        '③ 문제를 더 선명하게 만들기 위해 내가 스스로 답해 볼 질문을 3개 해줘.\n' +
         '인터뷰 메모에 없는 내용은 지어내지 말고 "(가정)"이라고 표시해줘.',
-      banner: '점수가 낮아도 괜찮아요 — <em>가장 높은 문장 1개</em>를 복사해 두세요',
-      example: {
-        src: '트랙 A · 문제 정의 문장',
-        html: '<div class="tblwrap"><table><tr><th>문제 정의 문장</th><th>많은가</th><th>자주·크게</th><th>돈·시간</th><th>합계</th></tr>' +
-          '<tr><td>① 자취생은 알바 끝난 평일 저녁 끼니를 챙기려 할 때 시간이 없고 1인분 배달은 비싸 거르거나 편의점으로 때운다.</td><td>5</td><td>5</td><td>4</td><td><b>14</b></td></tr>' +
-          '<tr><td>② 동네 중장년은 반찬을 팔고 싶을 때 주문 받을 곳과 가격·수량 정하는 법을 몰라 시작하지 못한다.</td><td>3</td><td>4</td><td>2</td><td>9</td></tr>' +
-          '<tr><td>③ 자취생 부모는 멀리 있어 자녀 끼니를 챙기고 싶어도 용돈을 보내는 것 말고는 방법이 없다.</td><td>4</td><td>3</td><td>5</td><td>12</td></tr></table></div>'
-      }
+      after: ['problem'],
+      tip: '<b>인터뷰 3가지 질문</b><ul><li>최근에 그런 일을 겪은 적 있어요? 언제요?</li><li>그때 어떻게 해결했어요?</li><li>그 방법에서 제일 불편한 점은요?</li></ul>옆 사람이 없다면 AI에게 “너는 ○○인 사람이야, 인터뷰할게”라고 시켜도 됩니다. 단, <b>AI가 말한 숫자는 가설</b>입니다.',
+      banner: '문제를 <em>한 문장</em>으로 쓸 수 있으면 반은 온 겁니다',
+      example: '<div class="tblwrap"><table><tr><th>누가</th><td>알바하는 자취생</td></tr><tr><th>언제</th><td>밤 9시 알바 끝나고 집에 왔을 때</td></tr><tr><th>무엇 때문에</th><td>시간이 없고 1인분 배달은 비싸서</td></tr><tr><th>지금은</th><td>편의점·라면으로 때운다</td></tr></table></div>'
     },
     {
-      id: 4, stage: 2, title: '아이디어 20개',
-      lead: '정의한 문제를 풀 아이디어를 <b>다섯 방향</b>에서 4개씩, 서로 다른 <b>20개</b>로 뽑아냅니다.',
-      fields: ['problem'],
-      tip: '방향을 정해 주면 비슷한 아이디어 20개가 아니라 <b>서로 다른 20개</b>가 나옵니다. 마음에 안 들면 “③번 방향만 5개 더”처럼 이어서 요청하세요.',
+      id: 3, stage: 2, min: 20, title: '내 아이디어 먼저, 그다음 확장',
+      lead: 'AI 아이디어는 누구나 받습니다. <b>내 아이디어를 먼저</b> 적고, AI로는 <b>내 생각을 넓혀</b> 보세요.',
+      before: ['i1', 'i2', 'i3', 'd1', 'd2', 'd3'],
+      aiTitle: 'AI 코치와 아이디어 키우기',
+      aiHelp: 'AI가 내 아이디어를 <b>한 단계 더 구체화</b>하고, 내가 못 본 방향도 보여 줍니다.',
       template:
-        '내가 고른 문제 정의 문장은 이거야.\n{{problem}}\n\n' +
-        '이 문제를 푸는 아이디어를 다섯 방향에서 4개씩, 모두 20개 내줘. 서로 비슷한 아이디어는 안 돼.\n\n' +
-        '① AI가 대신 해줘\n② AI가 가르쳐줘\n③ 사람과 사람을 이어줘\n' +
-        '④ 다른 업종에서 빌려와 (구독, 마감 할인, 1:1 코칭, 무인 판매 등)\n⑤ 정반대로 뒤집어\n\n' +
-        '번호는 1~20으로 매기고, 아이디어마다 "누가 어떻게 쓰는지"가 보이게 한 줄로 써줘. 방향별로 나눈 표로 정리해줘.',
-      banner: '<em>다섯 방향</em> 덕분에 서로 다른 아이디어 20개가 나옵니다',
-      example: {
-        src: '트랙 A · 아이디어 20개 (일부)',
-        html: '<div class="tblwrap"><table><tr><th>방향</th><th>아이디어</th></tr>' +
-          '<tr><td>① AI가 대신</td><td>1 예산·입맛 맞춤 주간 식단과 장보기 목록 · 2 냉장고 사진으로 오늘 저녁 요리</td></tr>' +
-          '<tr><td>③ 사람과 사람</td><td>9 동네 반찬 요리인 ↔ 자취생 주간 구독 · 11 “엄마 밥 한 끼” 가정 식탁 초대</td></tr>' +
-          '<tr><td>④ 다른 업종</td><td>13 꽃 구독처럼 반찬 정기 배송 · 16 원룸 1층 무인 반찬 냉장고</td></tr>' +
-          '<tr><td>⑤ 정반대로</td><td>18 학생이 요리인이 되어 중장년에게 판다</td></tr></table></div>'
-      }
+        '내가 정의한 문제는 이거야.\n{{problem}}\n\n' +
+        '[내가 먼저 떠올린 아이디어]\n- {{i1}}\n- {{i2}}\n- {{i3}}\n\n' +
+        '[내가 해 본 생각 놀이]\n- 다른 업종에서 빌려오면: {{d1}}\n- 정반대로 뒤집으면: {{d2}}\n- 사람과 사람을 이으면: {{d3}}\n\n' +
+        '너는 코치야. 내 아이디어를 대신 버리거나 정하지 말고 아래 순서로 해줘.\n' +
+        '① 내 아이디어마다 "한 단계 더 구체적으로 만들기 위해" 내가 답해야 할 질문을 하나씩 해줘.\n' +
+        '② 내가 떠올리지 못한 방향으로 새 아이디어를 5개만 더 제안해줘. (AI가 대신 / AI가 가르쳐 / 사람과 사람 / 다른 업종 / 정반대 중 다양하게)\n' +
+        '③ 내 것과 새 것을 합쳐 가장 유망한 5개를 아래 기준으로 1~5점 채점해 표로 보여줘. (문제 해결 / 6개월 안 시작 가능 / AI가 꼭 필요한가 / 다른 서비스와 다른 점)\n' +
+        '④ 마지막 선택은 내가 할 거니까 "추천"만 하고, 이유를 한 줄로 말해줘.',
+      after: ['idea', 'idea_diff'],
+      tip: '<b>3개가 어려우면 1개만</b> 써도 됩니다. 이상해 보여도 괜찮아요. <b>점수는 낮지만 이야기가 강한 아이디어</b>가 심사에서 기억에 남기도 합니다.',
+      banner: '“내가 끌리는 것”을 고르는 힘이 <em>창의력</em>입니다',
+      example: '<p>내 아이디어: 동네 반찬 모임 / 10분 요리 코치 / 무인 반찬 냉장고 → AI 질문: “누가 반찬을 만들 건가요?” → 선택: <b>동네 반찬 요리인과 자취생을 잇는 주간 구독</b></p>'
     },
     {
-      id: 5, stage: 2, title: '다섯 개로 좁히기',
-      lead: '20개 중 가장 유망한 <b>5개</b>를 <b>4가지 기준</b>으로 채점해 1위와 <b>숨은 후보</b>를 고릅니다.',
-      fields: [],
-      tip: '1위가 AI 없이도 되는 아이디어라면 AI에게 <b>“AI를 어디에 넣을까?”</b>를 물어보세요. 심사에서 AI 활용도는 늘 질문받습니다.',
+      id: 4, stage: 3, min: 20, title: '누가 돈을 낼까? 첫 고객은?',
+      lead: '심사위원은 <b>"그래서 누가 돈을 내죠?"</b>를 묻습니다. 답을 먼저 적고, AI 심사위원에게 <b>한 질문씩</b> 받아 보세요.',
+      before: ['m1', 'm2', 'm3', 'm4'],
+      aiTitle: 'AI 심사위원에게 받아 보기',
+      aiHelp: 'AI가 <b>한 번에 질문 하나씩</b> 던지고, 내가 답하면 다음 질문으로 넘어갑니다.',
       template:
-        '위 20개 중에서 가장 유망한 5개를 골라, 아래 4가지 기준으로 각각 1~5점으로 채점하고 표로 비교해줘.\n\n' +
-        '- 문제 해결: 우리가 정의한 문제를 정말 푸는가\n' +
-        '- 6개월 안: 학생 팀이 6개월 안에 시작해 볼 수 있는가\n' +
-        '- AI 필요: AI가 없으면 안 되는 핵심이 있는가\n' +
-        '- 다른 점: 이미 있는 서비스와 뚜렷하게 다른가\n\n' +
-        '그리고 다음도 알려줘.\n' +
-        '1) 합계 순위와 1위를 고른 이유\n' +
-        '2) 점수는 낮지만 이야기가 강하고 고객이 잊지 못할 "숨은 후보" 1개\n' +
-        '3) 1위가 AI 없이도 가능하다면, AI를 어디에 넣으면 좋을지 제안',
-      banner: '1위와 <em>숨은 후보</em> 중 우리 팀이 끌리는 쪽을 고르세요',
-      example: {
-        src: '트랙 A · 다섯 개 비교',
-        html: '<div class="tblwrap"><table><tr><th>아이디어</th><th>문제 해결</th><th>6개월 안</th><th>AI 필요</th><th>다른 점</th><th>합계</th></tr>' +
-          '<tr><td>9 동네 반찬 요리인 구독</td><td>5</td><td>4</td><td>4</td><td>4</td><td><b>17</b></td></tr>' +
-          '<tr><td>3 배달 주문 자동 묶기</td><td>3</td><td>5</td><td>4</td><td>3</td><td>15</td></tr>' +
-          '<tr><td>11 가정 식탁 초대</td><td>3</td><td>4</td><td>2</td><td>5</td><td>14</td></tr></table></div>' +
-          '<p>AI 한마디: “9번은 단순 매칭으로 끝나면 AI가 필요 없다. 식단 추천과 주문량 예측이 들어가야 한다.”</p>'
-      }
+        '우리 팀 아이디어는 이거야.\n{{idea}}\n(다른 점: {{idea_diff}})\n\n' +
+        '[내가 생각한 돈 이야기]\n' +
+        '- 돈 내는 사람: {{m1}}\n- 지금 쓰는 돈·시간: {{m2}}\n- 낼 금액과 이유: {{m3}}\n- 첫 고객 10명: {{m4}}\n\n' +
+        '지금부터 너는 까다로운 창업 해커톤 심사위원이야. 아래 규칙으로 진행해줘.\n' +
+        '- 질문은 한 번에 하나씩만 해. 내가 답하면 그 답의 빈틈을 파고드는 다음 질문을 해.\n' +
+        '- 총 5개 질문을 한 뒤, 가장 치명적인 약점 1개와 보완 방향을 알려줘. (법규·품질·비용·시장·경쟁 관점)\n' +
+        '- 내가 모르는 것은 억지로 답하지 않게 하고, 멘토에게 물어볼 질문으로 정리해줘.\n' +
+        '- 네가 대신 답을 만들어 주지 마.\n\n' +
+        '준비되면 첫 질문을 해줘.',
+      after: ['weak'],
+      tip: '<b>정확한 숫자를 몰라도 됩니다.</b> “모름”이나 “(가정)”으로 적는 게 지어내는 것보다 낫습니다. 그 칸이 <b>오후 멘토링 질문</b>이 됩니다.',
+      banner: '앱을 만들기 전에 <em>10명이 돈을 낼지</em> 먼저 확인하세요',
+      example: '<p>AI 심사위원: “한 끼 얼마에 팔고, 학생이 그 돈을 낼까요?” → 참가자: “5천 원 정도요. 학과 단체방에서 10명에게 물어볼 거예요.” → 약점: 위생 신고 → 멘토 질문으로 정리</p>'
     },
     {
-      id: 6, stage: 2, title: '한 줄 소개와 사용 장면',
-      lead: '아이디어를 <b>한 문장</b>으로 말하고, 고객이 쓰는 <b>5단계 장면</b>과 <b>이름 후보 5개</b>를 만듭니다.',
-      fields: ['idea'],
-      tip: '이 한 줄 소개가 <b>발표의 첫 문장</b>이 됩니다. 소리 내어 읽어 보고 어색하면 “더 쉬운 말로 다시”를 요청하세요.',
+      id: 5, stage: 3, min: 10, title: '한 줄 소개로 정리하기',
+      lead: '지금까지의 내 답을 <b>한 문장</b>으로 모읍니다. 이 문장이 <b>발표의 첫 문장</b>이 됩니다.',
+      before: ['o_who', 'o_name', 'o_ai'],
+      aiTitle: 'AI 코치와 다듬기',
+      aiHelp: 'AI가 후보를 보여 주면 <b>내가 고르고 고칩니다.</b>',
       template:
-        '우리 팀이 선택한 아이디어는 이거야.\n{{idea}}\n\n' +
-        '아래 3가지를 만들어줘.\n\n' +
-        '1) 한 줄 소개 (한 문장):\n   "[고객]을 위한 \'[서비스]\'로, AI가 [무엇을 해서] [어떤 문제]를 해결한다."\n' +
-        '2) 사용 장면: 고객이 처음 쓰는 순간부터 다시 쓰는 순간까지 5단계 흐름 (한 단계에 한 줄)\n' +
-        '3) 이름 후보 5개: 짧고 부르기 쉽게, 각각 이유 한 줄',
+        '우리 팀 정리야.\n- 문제: {{problem}}\n- 아이디어: {{idea}}\n- 고객: {{o_who}}\n- 서비스 이름(임시): {{o_name}}\n- AI가 하는 일: {{o_ai}}\n\n' +
+        '아래 형식으로 한 줄 소개 후보 3개를 만들어줘.\n"[고객]을 위한 \'[서비스]\'로, AI가 [무엇을 해서] [어떤 문제]를 해결한다."\n\n' +
+        '그리고 다음도 해줘.\n' +
+        '① 서비스 이름 후보 5개 (짧고 부르기 쉽게, 이유 한 줄)\n' +
+        '② 발표 첫 30초에 말할 오프닝 멘트 3가지 (질문형 / 장면형 / 숫자형)\n' +
+        '③ 마지막으로 내가 스스로 답해 볼 질문 하나: "이 한 줄 소개를 처음 듣는 사람이 가장 궁금해할 것은 뭘까?"\n' +
+        '정하는 건 내가 할 거니까 후보만 줘.',
+      after: ['oneliner'],
+      tip: '소리 내어 읽어 보고 <b>어색하면 더 쉬운 말로</b> 고치세요. 다 끝나면 오른쪽 위 <b>“내 아이디어 카드”</b>로 정리해 오후 팀 워크숍에 가져갑니다.',
       banner: '한 줄 소개가 <em>내일 발표의 첫 문장</em>이 됩니다',
-      example: {
-        src: '트랙 A · 한 줄 소개',
-        html: '<p>자취 대학생을 위한 ‘동네 밥상 구독’으로, AI가 예산과 입맛에 맞춰 주간 반찬을 추천하고 동네 중장년 요리인과 이어 주어 평일 저녁 끼니 문제를 해결한다.</p>' +
-          '<p>장면: 가입(예산·입맛·알레르기) → 일요일 AI 반찬 3종 추천 → 요리인 조리 → 화·금 저녁 픽업 → 남긴 양 기록으로 추천이 정확해짐</p>' +
-          '<p>이름: 밥상잇기 · 동네밥상 · 반찬이음 · 엄마손구독 · 한끼동네</p>'
-      }
+      example: '<p>자취 대학생을 위한 ‘동네밥상’으로, AI가 예산과 입맛에 맞춰 주간 반찬을 추천하고 동네 중장년 요리인과 이어 평일 저녁 끼니 문제를 해결한다.</p>'
     },
     {
-      id: 7, stage: 3, title: '린 캔버스 초안',
-      lead: '사업 모델을 <b>9칸 린 캔버스</b>로 정리합니다. 모르는 칸은 지어내지 않고 <b>(가정)</b>으로 표시해 멘토 질문으로 남깁니다.',
-      fields: ['idea'],
-      tip: '(가정)이 붙은 칸이 바로 <b>오후 멘토링에서 물어볼 질문</b>입니다. 많을수록 좋은 거예요.',
+      id: 6, stage: 3, min: 0, card: true, title: '내 아이디어 카드',
+      lead: '오늘 내 손으로 쓴 것을 <b>한 장</b>으로 모았습니다. 복사하거나 인쇄해서 <b>오후 팀 워크숍</b>에 가져가세요.',
+      before: [],
+      aiTitle: '(선택) 5분 발표 구성 받기',
+      aiHelp: '카드 내용으로 <b>PT 5분 + 질의응답 5분</b> 발표 구성을 만듭니다.',
       template:
-        '우리 팀 아이디어는 이거야.\n{{idea}}\n\n' +
-        '지금까지의 대화를 바탕으로 린 캔버스를 9칸으로 정리해줘.\n' +
-        '칸: 문제 / 고객 / 고유한 가치 / 해결 방법 / 고객을 만나는 길 / 수익 / 비용 / 핵심 숫자 / 강점\n\n' +
-        '규칙:\n' +
-        '- 내가 알려준 내용과 인터뷰에서 나온 것만 확정으로 써.\n' +
-        '- 모르는 것은 절대 숫자를 지어내지 말고 "(가정)" 또는 "조사 필요"로 표시해.\n' +
-        '- 마지막에 (가정)이 붙은 칸을 목록으로 만들고, 각각 누구에게 어떻게 확인하면 좋을지 알려줘.',
-      banner: '(가정) 표시된 칸이 <em>멘토에게 물어볼 질문</em>입니다',
-      example: {
-        src: '트랙 A · 린 캔버스 (일부)',
-        html: '<div class="tblwrap"><table><tr><th>칸</th><th>내용</th></tr>' +
-          '<tr><td>문제</td><td>자취생은 평일 저녁 끼니를 거르고, 동네 요리인은 반찬을 팔 곳이 없다</td></tr>' +
-          '<tr><td>고객</td><td>대학가 자취생. 먼저는 기숙사 밖 1~2학년 (가정)</td></tr>' +
-          '<tr><td>수익</td><td>학생 주간 구독, 부모의 ‘자녀 밥상 선물’, 요리인 판매 수수료. 가격은 조사 필요</td></tr></table></div>'
-      }
-    },
-    {
-      id: 8, stage: 3, title: '돈의 흐름 세 가지',
-      lead: '돈 버는 방법 <b>3가지</b>를 비교해 가장 현실적인 것 하나를 고르고, <b>2주짜리 작은 실험</b>까지 설계합니다.',
-      fields: [],
-      tip: '좋은 실험은 <b>앱 없이 손으로</b> 할 수 있고, 끝날 때 “다음에도 할래?”와 “얼마면 낼래?”를 묻습니다.',
-      template:
-        '이 사업이 돈을 버는 방법을 3가지 제안해줘. 표로 정리하고 열은 아래처럼 해줘.\n' +
-        '방법 | 누가 | 무엇에 | 어떻게 결제 | 첫 고객 10명을 만날 방법\n\n' +
-        '그중 가장 현실적인 한 가지를 골라 이유를 말해줘.\n\n' +
-        '그다음, 그 한 가지가 맞는지 검증할 "2주짜리 작은 실험"을 설계해줘.\n' +
-        '- 앱을 만들지 않고 손으로 운영할 수 있어야 해.\n' +
-        '- 몇 명을 대상으로 무엇을 하는지 구체적으로.\n' +
-        '- 끝날 때 꼭 물어볼 질문 2개: "다음에도 할래?", "얼마면 낼래?"',
-      banner: '앱보다 먼저 <em>10명이 돈을 낼지</em> 확인하세요',
-      example: {
-        src: '트랙 A · 돈의 흐름',
-        html: '<div class="tblwrap"><table><tr><th>방법</th><th>누가</th><th>무엇에</th><th>첫 고객 10명</th></tr>' +
-          '<tr><td>1 학생 주간 구독</td><td>자취생</td><td>주 2회 반찬 3종</td><td>학과 단체 대화방 공지</td></tr>' +
-          '<tr><td>2 부모 선물 구독</td><td>자취생 부모</td><td>한 달 밥상 선물권</td><td>학부모 모임</td></tr>' +
-          '<tr><td>3 수수료·제휴</td><td>요리인, 기숙사·생협</td><td>건당 수수료</td><td>복지관·주민센터</td></tr></table></div>' +
-          '<p>작은 실험: 단체방에서 10명 모집 → 요리인 1명과 2주간 카톡 주문으로 수동 운영 → “다음 주도 할래?” “얼마면 낼래?”</p>'
-      }
-    },
-    {
-      id: 9, stage: 3, title: '심사위원 약점 점검',
-      lead: 'AI가 <b>까다로운 심사위원</b>이 되어 약점 5가지와 날카로운 질문 5개를 던집니다. 발표 전에 먼저 맞아 보세요.',
-      fields: [],
-      tip: '답하기 어려운 질문은 <b>멘토에게 물어볼 질문</b>으로 바꿔서 가져가세요. 모르는 것을 아는 것도 실력입니다.',
-      template:
-        '지금부터 너는 까다로운 창업 해커톤 심사위원이야. 지금까지 정리한 우리 팀 사업을 냉정하게 점검해줘.\n\n' +
-        '1) 약점 5가지 (법규·품질·비용·시장·경쟁 관점)\n' +
-        '2) 심사위원이 실제로 물을 날카로운 질문 5개\n' +
-        '3) 가장 치명적인 약점 1개와 보완 방법\n' +
-        '4) 보완이 실제로 가능한지, 비용이 얼마인지는 네가 모르면 모른다고 말하고, 멘토에게 물어볼 질문으로 정리해줘.',
-      banner: '가장 치명적인 약점을 <em>먼저 말하는 팀</em>이 신뢰를 얻습니다',
-      example: {
-        src: '트랙 A · 약점과 질문',
-        html: '<p>약점: 집에서 만든 반찬 판매는 식품 위생 신고 대상 · 요리인마다 맛 편차 · 소량 포장 운영비 · 방학 수요 하락 · 기존 반찬 가게와 경쟁</p>' +
-          '<p>질문: 한 끼 얼마에 팔 거고 학생이 낼까? 위생 사고는 누가 책임지나? 방학 두 달은 어떻게 버티나?</p>' +
-          '<p>가장 치명적: <b>위생·법규</b> → 신고된 공유주방 활용 또는 기존 반찬 가게와 제휴 (비용은 멘토에게 질문)</p>'
-      }
-    },
-    {
-      id: 10, stage: 4, bonus: true, title: '5분 발표 구성',
-      lead: '지금까지 만든 내용을 <b>PT 5분 + 질의응답 5분</b>에 맞는 발표 흐름으로 정리합니다.',
-      fields: [],
-      tip: '발표는 팀당 <b>PT 5분, 질의응답 5분</b> 총 10분입니다. 생성된 대본을 소리 내어 읽으며 시간을 재 보세요.',
-      template:
-        '지금까지 우리가 정리한 내용(문제 정의, 아이디어, 한 줄 소개, 린 캔버스, 돈의 흐름, 약점)을 바탕으로 해커톤 발표자료 구성을 만들어줘.\n\n' +
-        '조건:\n' +
-        '- PT 5분 + 질의응답 5분\n' +
-        '- 슬라이드 6장 이내: 장마다 제목, 핵심 문장 1개, 화면에 넣을 것\n' +
-        '- 1장은 한 줄 소개로 시작\n' +
-        '- 장마다 말하는 시간 배분 (합계 5분)\n' +
-        '- 예상 질문 3개와 답변 한 줄씩',
-      banner: '발표는 <em>문제 → 해결 → 돈 → 다음 한 걸음</em> 순서로 말하세요',
+        '아래는 우리 팀(또는 내) 아이디어 카드야.\n\n{{card}}\n\n' +
+        '이 내용으로 해커톤 발표 구성을 짜 줘.\n' +
+        '- PT 5분 + 질의응답 5분\n- 슬라이드 6장 이내: 장마다 제목, 핵심 문장 1개, 화면에 넣을 것\n' +
+        '- 1장은 한 줄 소개로 시작\n- 장마다 말하는 시간 배분 (합계 5분)\n- 예상 질문 3개는 질문만 주고, 답은 내가 준비할 수 있게 힌트 한 줄만 줘.',
+      after: [],
+      tip: '카드의 빈 줄은 <b>아직 안 정한 것</b>입니다. 오후 팀 워크숍과 멘토링에서 채워 가면 됩니다.',
+      banner: '오늘 만든 건 <em>답이 아니라 출발점</em>입니다 — 오후에 팀과 키워 보세요',
       example: null
     }
   ];
 
   /* ---------- 상태 ---------- */
-  var KEY = 'aiIdeaStudio.v1';
+  var KEY = 'aiIdeaStudio.v2';
   var state = { v: { theme: '1' }, done: {}, last: 0 };
   try { var s = JSON.parse(localStorage.getItem(KEY) || 'null'); if (s && s.v) state = s; } catch (e) {}
   function save() { try { localStorage.setItem(KEY, JSON.stringify(state)); } catch (e) {} }
@@ -260,130 +181,170 @@
   function esc(s) { return String(s).replace(/[&<>"']/g, function (c) { return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]; }); }
   function val(k) { return (state.v[k] || '').trim(); }
   var toastT;
-  function toast(msg) {
-    var t = $('toast'); t.textContent = msg; t.classList.add('show');
-    clearTimeout(toastT); toastT = setTimeout(function () { t.classList.remove('show'); }, 3200);
-  }
-
-  /* 템플릿 → 토큰 배열 */
+  function toast(msg) { var t = $('toast'); t.textContent = msg; t.classList.add('show'); clearTimeout(toastT); toastT = setTimeout(function () { t.classList.remove('show'); }, 3200); }
+  function theme() { return state.v.theme === '2' ? '2' : '1'; }
+  function qinfo(k) { var f = F[k]; if (f.by) return { q: f.by[theme()][0], ph: f.by[theme()][1] }; return { q: f.q, ph: f.ph }; }
   function themeLine() {
-    return state.v.theme === '2'
-      ? '주제는 "스토리텔링 기반의 콘텐츠 창업 아이디어"야. 사람들이 자기 이야기를 전하거나 이야기로 알리고 싶은데 어려워하는 불편을 중심으로 찾아줘.'
+    return theme() === '2'
+      ? '주제는 "스토리텔링 기반의 콘텐츠 창업 아이디어"야. 사람들이 자기 이야기를 전하거나 이야기로 알리고 싶은데 어려워하는 불편에 주목해.'
       : '주제는 "일상 속 불편을 창업 아이디어로"야.';
   }
+  function cardText() {
+    function L(label, k) { return label + ': ' + (val(k) || '(아직 없음)'); }
+    return [
+      '■ 내가 고른 불편\n' + (val('pain') || '(아직 없음)'),
+      '■ 문제 정의\n' + (val('problem') || '(아직 없음)') + '\n(누가: ' + (val('p_who') || '-') + ' / 언제: ' + (val('p_when') || '-') + ' / 이유: ' + (val('p_why') || '-') + ' / 지금은: ' + (val('p_now') || '-') + ')',
+      '■ 진짜 사람에게 들은 말\n' + (val('memo') || '(아직 없음)'),
+      '■ 선택한 아이디어\n' + (val('idea') || '(아직 없음)') + '\n' + L('다른 점', 'idea_diff'),
+      '■ 돈과 첫 고객\n' + [L('돈 내는 사람', 'm1'), L('지금 쓰는 돈·시간', 'm2'), L('낼 금액', 'm3'), L('첫 고객 10명', 'm4')].join('\n'),
+      '■ 가장 아픈 약점과 보완\n' + (val('weak') || '(아직 없음)'),
+      '■ 한 줄 소개\n' + (val('oneliner') || '(아직 없음)')
+    ].join('\n\n');
+  }
+
+  /* 템플릿 → 조각 */
   function parts(p) {
     var out = [], re = /\{\{(\w+)\}\}/g, last = 0, m, tpl = p.template;
     while ((m = re.exec(tpl))) {
       if (m.index > last) out.push({ t: tpl.slice(last, m.index) });
       var k = m[1];
       if (k === 'theme_line') out.push({ t: themeLine() });
+      else if (k === 'card') out.push({ t: cardText() });
+      else if (/_q$/.test(k)) out.push({ t: qinfo(k.slice(0, -2)).q });
       else out.push({ k: k, v: val(k) });
       last = re.lastIndex;
     }
     if (last < tpl.length) out.push({ t: tpl.slice(last) });
     return out;
   }
-  function plain(p) {
-    return parts(p).map(function (x) { return x.k ? (x.v || '[' + F[x.k].label + ']') : x.t; }).join('');
-  }
+  function fill(x) { return x.v || (F[x.k].opt ? '(아직 없음)' : '[' + F[x.k].label + ']'); }
+  function plain(p) { return parts(p).map(function (x) { return x.k ? fill(x) : x.t; }).join(''); }
   function html(p) {
     return parts(p).map(function (x) {
       if (!x.k) return esc(x.t);
-      return x.v ? '<mark>' + esc(x.v) + '</mark>' : '<mark class="blank">[' + esc(F[x.k].label) + ']</mark>';
+      if (x.v) return '<mark>' + esc(x.v) + '</mark>';
+      return F[x.k].opt ? '<span class="optv">(아직 없음)</span>' : '<mark class="blank">[' + esc(F[x.k].label) + ']</mark>';
     }).join('');
   }
-  function blanks(p) { return parts(p).filter(function (x) { return x.k && !x.v; }).length; }
+  function blanks(p) { return parts(p).filter(function (x) { return x.k && !x.v && !F[x.k].opt; }).length; }
 
   /* ---------- 라우팅 ---------- */
-  var cur = 0; // 0 = 표지
+  var cur = 0;
   function go(n) { location.hash = n ? '#/' + n : '#/'; }
   function route() {
     var m = /^#\/(\d+)/.exec(location.hash);
     var n = m ? Math.min(+m[1], P.length) : 0;
-    cur = n;
-    $('cover').hidden = n !== 0;
-    $('studio').hidden = n === 0;
+    stopTimer(); cur = n;
+    $('cover').hidden = n !== 0; $('studio').hidden = n === 0;
     if (n) { state.last = n; save(); render(); window.scrollTo(0, 0); $('slide').focus({ preventScroll: true }); }
     else { $('resumeBtn').hidden = !(state.last > 0); window.scrollTo(0, 0); }
+  }
+
+  /* ---------- 타이머 ---------- */
+  var tm = { id: null, left: 0 };
+  function fmt(s) { var m = Math.floor(s / 60), r = s % 60; return (m < 10 ? '0' : '') + m + ':' + (r < 10 ? '0' : '') + r; }
+  function stopTimer() { if (tm.id) { clearInterval(tm.id); tm.id = null; } }
+  function toggleTimer() {
+    var p = P[cur - 1], b = $('timerBtn'); if (!p.min || !b) return;
+    if (tm.id) { stopTimer(); b.textContent = '⏱ 다시 시작 ' + fmt(tm.left); return; }
+    if (!tm.left || tm.left <= 0 || tm.stepId !== p.id) { tm.left = p.min * 60; tm.stepId = p.id; }
+    b.textContent = '⏸ ' + fmt(tm.left);
+    tm.id = setInterval(function () {
+      tm.left--; var bb = $('timerBtn'); if (bb) bb.textContent = '⏸ ' + fmt(Math.max(tm.left, 0));
+      if (tm.left <= 0) { stopTimer(); if (bb) bb.textContent = '⏱ 시간 끝!'; toast('시간 끝! 쓴 데까지만 다음 단계로 넘어가요'); }
+    }, 1000);
   }
 
   /* ---------- 렌더 ---------- */
   function render() {
     var p = P[cur - 1];
-    renderCrumbs(p); renderStepper(); renderSlide(p); renderPager();
-    document.title = 'P' + p.id + ' ' + p.title + ' · AI 아이디어 발굴 프롬프트 스튜디오';
-  }
-  function renderCrumbs(p) {
-    var h = '<button data-go="0">시작</button>';
-    [1, 2, 3].forEach(function (s) {
-      h += '<span class="sep">›</span>' + (p.stage === s ? '<span class="on">' + STAGES[s].name + '</span>' : '<button data-go="' + firstOf(s) + '">' + STAGES[s].name + '</button>');
-    });
-    $('crumbs').innerHTML = h;
+    $('crumbs').innerHTML = crumbs(p); renderStepper(); renderSlide(p); renderPager();
+    document.title = p.title + ' · AI 아이디어 발굴 프롬프트 스튜디오';
   }
   function firstOf(s) { for (var i = 0; i < P.length; i++) if (P[i].stage === s) return P[i].id; return 1; }
+  function crumbs(p) {
+    var h = '<button data-go="0">시작</button>';
+    [1, 2, 3].forEach(function (s) { h += '<span class="sep">›</span>' + (p.stage === s ? '<span class="on">' + STAGES[s] + '</span>' : '<button data-go="' + firstOf(s) + '">' + STAGES[s] + '</button>'); });
+    return h;
+  }
   function renderStepper() {
     $('stepper').innerHTML = P.map(function (p) {
-      var cls = 'chip' + (p.id === cur ? ' on' : '') + (state.done[p.id] ? ' done' : '') + (p.bonus ? ' bonus gap' : '');
-      return '<button class="' + cls + '" data-go="' + p.id + '" role="tab" aria-selected="' + (p.id === cur) + '" aria-label="프롬프트 ' + p.id + ' ' + esc(p.title) + '">' + (p.bonus ? '+' : p.id) + '<small>' + esc(p.title) + '</small></button>';
+      var cls = 'chip' + (p.id === cur ? ' on' : '') + (state.done[p.id] ? ' done' : '') + (p.card ? ' bonus' : '');
+      return '<button class="' + cls + '" data-go="' + p.id + '" role="tab" aria-selected="' + (p.id === cur) + '">' + (p.card ? '카드' : p.id) + '<small>' + esc(p.title) + (p.min ? ' · ' + p.min + '분' : '') + '</small></button>';
     }).join('');
     var on = $('stepper').querySelector('.on'); if (on && on.scrollIntoView) on.scrollIntoView({ inline: 'center', block: 'nearest' });
   }
-  function fieldHtml(k) {
-    var f = F[k], v = state.v[k] || '', id = 'f_' + k, lab = '<label for="' + id + '">' + esc(f.label) + (f.hint ? '<i>' + esc(f.hint) + '</i>' : '') + '</label>';
-    var inp;
-    if (f.type === 'select') inp = '<select id="' + id + '" data-k="' + k + '">' + f.options.map(function (o) { return '<option value="' + o[0] + '"' + (String(v || '1') === o[0] ? ' selected' : '') + '>' + esc(o[1]) + '</option>'; }).join('') + '</select>';
-    else if (f.type === 'area') inp = '<textarea id="' + id + '" data-k="' + k + '" placeholder="' + esc(f.ph || '') + '">' + esc(v) + '</textarea>';
-    else inp = '<input id="' + id + '" data-k="' + k + '" type="text" value="' + esc(v) + '" placeholder="' + esc(f.ph || '') + '" autocomplete="off">';
-    return '<div class="field' + (v ? ' filled' : '') + '">' + lab + inp + '</div>';
+  function qcard(k, i, num) {
+    var f = F[k], v = state.v[k] || '', id = 'f_' + k;
+    if (f.type === 'select') {
+      return '<div class="field"><label for="' + id + '">' + esc(f.label) + '</label><select id="' + id + '" data-k="' + k + '">' + f.options.map(function (o) { return '<option value="' + o[0] + '"' + (theme() === o[0] ? ' selected' : '') + '>' + esc(o[1]) + '</option>'; }).join('') + '</select></div>';
+    }
+    var qi = qinfo(k);
+    var ctl = f.type === 'area'
+      ? '<textarea id="' + id + '" data-k="' + k + '" rows="3" placeholder="' + esc(qi.ph || '') + '">' + esc(v) + '</textarea>'
+      : '<input id="' + id + '" data-k="' + k + '" type="text" value="' + esc(v) + '" placeholder="' + esc(qi.ph || '') + '" autocomplete="off">';
+    return '<div class="field q' + (v ? ' filled' : '') + '"><label for="' + id + '"><span class="qn">' + num + '</span><span>' + esc(qi.q) + (f.opt ? ' <i>선택</i>' : '') + (f.hint ? '<em>' + esc(f.hint) + '</em>' : '') + '</span></label>' + ctl + '</div>';
+  }
+  function fieldList(keys, start) { var n = start || 1; return keys.map(function (k) { var h = qcard(k, 0, F[k].type === 'select' ? '' : n); if (F[k].type !== 'select') n++; return h; }).join(''); }
+  function cardHtml() {
+    var rows = [['내가 고른 불편', 'pain'], ['문제 정의', 'problem'], ['진짜 사람에게 들은 말', 'memo'], ['선택한 아이디어', 'idea'], ['다른 점', 'idea_diff'], ['돈 내는 사람', 'm1'], ['지금 쓰는 돈·시간', 'm2'], ['낼 금액', 'm3'], ['첫 고객 10명', 'm4'], ['약점과 보완', 'weak']];
+    return '<div class="idcard"><div class="idcard-h"><span>내 아이디어 카드</span><small>AI Build-up 창업 캠프</small></div>' +
+      '<div class="idcard-one">' + (val('oneliner') ? esc(val('oneliner')) : '<span class="optv">한 줄 소개를 5단계에서 완성하면 여기에 나타나요</span>') + '</div>' +
+      '<dl>' + rows.map(function (r) { return '<div><dt>' + r[0] + '</dt><dd>' + (val(r[1]) ? esc(val(r[1])) : '<span class="optv">아직 없음</span>') + '</dd></div>'; }).join('') + '</dl></div>';
   }
   function renderSlide(p) {
-    var st = STAGES[p.stage], n = blanks(p);
-    var left = p.fields.length
-      ? '<h3 class="block-title">① 빈칸 채우기</h3><div class="fields">' + p.fields.map(fieldHtml).join('') + '</div>'
-      : '<h3 class="block-title">① 빈칸 채우기</h3><div class="nofields">이 프롬프트는 <b>빈칸이 없습니다.</b> 앞 단계에서 이어진 같은 대화창에 그대로 붙여넣으세요.</div>';
+    var n = blanks(p), st = STAGES[p.stage];
+    var beforeKeys = (p.theme ? ['theme'] : []).concat(p.before);
+    var left = '';
+    if (p.card) {
+      left = '<h3 class="block-title">① 오늘 내가 만든 것</h3>' + cardHtml() +
+        '<div class="card-actions"><button class="sbtn copy" data-act="copycard">📋 카드 복사</button><button class="sbtn" data-act="print">🖨 인쇄 / PDF</button></div>';
+    } else {
+      left = '<h3 class="block-title">① 먼저 내 생각 쓰기 <span class="rule">AI 없이 먼저!</span></h3><div class="fields">' + fieldList(beforeKeys) + '</div>';
+    }
     left += '<div class="tip">' + p.tip + '</div>';
     var right =
-      '<h3 class="block-title">② 프롬프트 확인</h3>' +
-      '<div class="pbox"><div class="pbox-head"><span>프롬프트 ' + (p.bonus ? '보너스' : p.id) + '</span><span class="cnt' + (n ? '' : ' ok') + '" id="cnt">' + cntText(n) + '</span></div>' +
+      '<h3 class="block-title">② ' + esc(p.aiTitle) + '</h3><p class="aihelp">' + p.aiHelp + '</p>' +
+      '<div class="pbox"><div class="pbox-head"><span>프롬프트 · 내 답이 자동으로 들어가요</span><span class="cnt' + (n ? '' : ' ok') + '" id="cnt">' + cntText(n) + '</span></div>' +
       '<pre class="pre" id="pre">' + html(p) + '</pre></div>' +
-      '<div class="send"><h3 class="block-title" style="margin-top:16px">③ 복사하고 AI로 보내기</h3><div class="send-row">' +
+      '<div class="send"><div class="send-row">' +
       '<button class="sbtn copy" data-act="copy">📋 복사하기</button>' +
       '<button class="sbtn" data-act="chatgpt"><span class="dot d-gpt"></span>ChatGPT</button>' +
       '<button class="sbtn" data-act="gemini"><span class="dot d-gem"></span>Gemini</button>' +
       '<button class="sbtn" data-act="claude"><span class="dot d-cla"></span>Claude</button></div>' +
       '<p class="sendnote">' + (p.id === 1
-        ? '<b>새 대화창</b>이 열립니다. ChatGPT·Claude는 프롬프트가 자동 입력되고, <b>Gemini는 붙여넣기(Ctrl+V)</b>가 필요해요. 어떤 버튼이든 먼저 자동 복사됩니다.'
+        ? '<b>새 대화창</b>이 열립니다. ChatGPT·Claude는 자동 입력, <b>Gemini는 붙여넣기(Ctrl+V)</b>가 필요해요. 어떤 버튼이든 먼저 자동 복사됩니다.'
         : '<b>같은 대화창에 이어서</b> 붙여넣으세요(Ctrl+V). 새 창을 열면 앞 내용을 AI가 기억하지 못합니다.') + '</p></div>';
-    var ex = p.example ? '<details class="ex"><summary>시뮬레이션 예시 보기 — ' + esc(p.example.src) + '</summary><div class="ex-body">' + p.example.html + '</div></details>' : '';
+    var after = p.after.length
+      ? '<section class="after"><h3 class="block-title navy">③ AI와 이야기한 뒤, 내 손으로 정리하기</h3><div class="fields">' + fieldList(p.after, 1) + '</div></section>' : '';
+    var ex = p.example ? '<details class="ex"><summary>막막할 때 — 예시 보기 (동네 밥상 잇기)</summary><div class="ex-body">' + p.example + '</div></details>' : '';
     $('slide').innerHTML =
-      '<p class="stage-label">' + st.name + '</p><h2>프롬프트 ' + (p.bonus ? '보너스' : p.id) + ' · ' + esc(p.title) + '</h2><p class="lead">' + p.lead + '</p>' +
-      '<div class="grid"><section>' + left + '</section><section>' + right + '</section></div>' + ex +
+      '<div class="slide-head"><div><p class="stage-label">' + st + '</p><h2>' + (p.card ? '' : p.id + '. ') + esc(p.title) + '</h2></div>' +
+      (p.min ? '<button class="timer" id="timerBtn" data-act="timer">⏱ ' + p.min + '분 타이머</button>' : '') + '</div>' +
+      '<p class="lead">' + p.lead + '</p>' +
+      '<div class="grid"><section>' + left + '</section><section>' + right + '</section></div>' + after + ex +
       '<div class="banner">' + p.banner + '</div>';
   }
   function cntText(n) { return n ? '빈칸 ' + n + '개 남음' : '✓ 모두 채워짐'; }
   function renderPager() {
     var a = P[cur - 2], b = P[cur];
     $('prevBtn').disabled = !a; $('nextBtn').disabled = !b;
-    $('prevBtn').dataset.go = a ? a.id : '';
-    $('nextBtn').dataset.go = b ? b.id : '';
-    $('prevBtn').innerHTML = a ? '‹ <b>이전</b> · 프롬프트 ' + (a.bonus ? '보너스' : a.id) + ' ' + esc(a.title) : '';
-    $('nextBtn').innerHTML = b ? '<b>다음</b> › 프롬프트 ' + (b.bonus ? '보너스' : b.id) + ' · ' + esc(b.title) : '';
+    $('prevBtn').dataset.go = a ? a.id : ''; $('nextBtn').dataset.go = b ? b.id : '';
+    $('prevBtn').innerHTML = a ? '‹ <b>이전</b> · ' + esc(a.title) : '';
+    $('nextBtn').innerHTML = b ? '<b>다음</b> › ' + esc(b.title) : '';
   }
 
   /* ---------- 복사 · 보내기 ---------- */
-  function copyText(text) {
-    if (navigator.clipboard && navigator.clipboard.writeText) {
-      return navigator.clipboard.writeText(text).catch(function () { return fallbackCopy(text); });
-    }
-    return fallbackCopy(text);
-  }
   function fallbackCopy(text) {
     return new Promise(function (res, rej) {
       var ta = document.createElement('textarea'); ta.value = text; ta.style.cssText = 'position:fixed;top:0;left:0;opacity:0';
-      document.body.appendChild(ta); ta.select();
-      var ok = false; try { ok = document.execCommand('copy'); } catch (e) {}
+      document.body.appendChild(ta); ta.select(); var ok = false; try { ok = document.execCommand('copy'); } catch (e) {}
       document.body.removeChild(ta); ok ? res() : rej();
     });
+  }
+  function copyText(text) {
+    if (navigator.clipboard && navigator.clipboard.writeText) return navigator.clipboard.writeText(text).catch(function () { return fallbackCopy(text); });
+    return fallbackCopy(text);
   }
   var URLS = {
     chatgpt: function (t) { return 'https://chatgpt.com/?q=' + encodeURIComponent(t); },
@@ -392,20 +353,20 @@
   };
   var NAMES = { chatgpt: 'ChatGPT', claude: 'Claude', gemini: 'Gemini' };
   function act(kind) {
-    var p = P[cur - 1], text = plain(p), n = blanks(p);
-    var copied = copyText(text);
+    var p = P[cur - 1];
+    if (kind === 'timer') return toggleTimer();
+    if (kind === 'print') return window.print();
+    if (kind === 'copycard') return copyText(cardText()).then(function () { toast('카드를 복사했어요'); }, function () { toast('복사에 실패했어요'); });
+    var text = plain(p), n = blanks(p), copied = copyText(text);
     var done = function (msg) { state.done[p.id] = true; save(); renderStepper(); toast(msg); };
     if (kind === 'copy') {
-      copied.then(function () { done(n ? '복사했어요 (빈칸 ' + n + '개는 [대괄호]로 남아 있어요)' : '복사 완료! AI 대화창에 붙여넣기(Ctrl+V)'); },
-                  function () { toast('복사에 실패했어요. 프롬프트 상자를 직접 선택해 복사해 주세요.'); });
+      copied.then(function () { done(n ? '복사했어요 (빈칸 ' + n + '개는 [대괄호]로 남아 있어요)' : '복사 완료! AI 대화창에 붙여넣기(Ctrl+V)'); }, function () { toast('복사에 실패했어요. 프롬프트 상자를 직접 복사해 주세요.'); });
       return;
     }
     var url = URLS[kind](text), auto = kind !== 'gemini' && url.length < 7000;
     if (kind !== 'gemini' && !auto) url = kind === 'chatgpt' ? 'https://chatgpt.com/' : 'https://claude.ai/new';
     window.open(url, '_blank', 'noopener');
-    copied.then(function () {
-      done(auto ? NAMES[kind] + ' 새 창에 자동 입력됩니다. 안 보이면 붙여넣기(Ctrl+V)' : '복사됨 → ' + NAMES[kind] + '에서 붙여넣기(Ctrl+V)');
-    }, function () { toast('복사에 실패했어요. 프롬프트 상자를 직접 복사해 주세요.'); });
+    copied.then(function () { done(auto ? NAMES[kind] + ' 새 창에 자동 입력됩니다. 안 보이면 붙여넣기(Ctrl+V)' : '복사됨 → ' + NAMES[kind] + '에서 붙여넣기(Ctrl+V)'); }, function () { toast('복사에 실패했어요. 프롬프트 상자를 직접 복사해 주세요.'); });
   }
 
   /* ---------- 이벤트 ---------- */
@@ -414,14 +375,18 @@
     if (g && g.dataset.go !== '' && !g.disabled) { go(+g.dataset.go); return; }
     var a = e.target.closest('[data-act]'); if (a) act(a.dataset.act);
   });
-  document.addEventListener('input', function (e) {
+  document.addEventListener('input', function (e) { onInput(e); });
+  document.addEventListener('change', function (e) { if (e.target.tagName === 'SELECT') onInput(e); });
+  function onInput(e) {
     var k = e.target.dataset && e.target.dataset.k; if (!k) return;
     state.v[k] = e.target.value; save();
     var p = P[cur - 1];
+    if (k === 'theme') { render(); return; } // 주제가 바뀌면 질문 문구도 바뀜
     $('pre').innerHTML = html(p);
     var n = blanks(p), c = $('cnt'); c.textContent = cntText(n); c.className = 'cnt' + (n ? '' : ' ok');
     var f = e.target.closest('.field'); if (f) f.classList.toggle('filled', !!e.target.value.trim());
-  });
+    if (p.card) { var ic = document.querySelector('.idcard'); if (ic) ic.outerHTML = cardHtml(); }
+  }
   document.addEventListener('keydown', function (e) {
     if (!cur || /INPUT|TEXTAREA|SELECT/.test(document.activeElement.tagName)) return;
     if (e.key === 'ArrowRight' && P[cur]) go(P[cur].id);
