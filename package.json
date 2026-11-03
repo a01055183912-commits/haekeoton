@@ -1,0 +1,8 @@
+{
+  "name": "ai-idea-prompt-studio",
+  "version": "1.0.0",
+  "private": true,
+  "description": "AI 아이디어 발굴 프롬프트 스튜디오",
+  "scripts": { "start": "node server.js" },
+  "engines": { "node": ">=18" }
+}
