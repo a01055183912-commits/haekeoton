@@ -1,0 +1,58 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>AI 아이디어 발굴 프롬프트 스튜디오</title>
+<meta name="description" content="문제 정의 → 아이디어 도출 → 비즈니스 모델. 빈칸만 채우면 완성되는 프롬프트를 복사해 ChatGPT·Gemini·Claude로 바로 보내세요.">
+<link rel="preconnect" href="https://cdn.jsdelivr.net">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.css">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<div id="app">
+  <!-- 표지 -->
+  <section id="cover" class="cover" hidden>
+    <div class="cover-in">
+      <p class="cover-kicker">AI Build-up 창업 캠프 · AI 활용 교육</p>
+      <h1>AI 아이디어 발굴<br>프롬프트 스튜디오</h1>
+      <p class="cover-sub">생성형 AI 도구 활용을 통한 아이디어 발굴법 — 빈칸만 채우고, 복사해서, ChatGPT · Gemini · Claude로 바로 보내세요.</p>
+      <ol class="flow">
+        <li><b>1단계</b> 문제 정의<small>프롬프트 1~3</small></li>
+        <li><b>2단계</b> 아이디어 도출<small>프롬프트 4~6</small></li>
+        <li><b>3단계</b> 비즈니스 모델<small>프롬프트 7~9</small></li>
+      </ol>
+      <div class="cover-cta">
+        <button class="btn btn-yellow" id="startBtn">시작하기 ›</button>
+        <button class="btn btn-ghost-w" id="resumeBtn" hidden>이어서 하기 ›</button>
+      </div>
+      <p class="cover-foot">2026. 11. 5.(목) 11:00~12:30 · 김미연 강사</p>
+    </div>
+  </section>
+
+  <!-- 스튜디오 -->
+  <main id="studio" hidden>
+    <div class="topbar">
+      <button class="home" id="homeBtn" aria-label="표지로">AI 프롬프트 스튜디오</button>
+      <nav class="crumbs" id="crumbs" aria-label="단계"></nav>
+    </div>
+    <div class="frame">
+      <div class="stepper" id="stepper" role="tablist" aria-label="프롬프트 번호"></div>
+
+      <article id="slide" class="slide" tabindex="-1"></article>
+
+      <div class="pager">
+        <button class="next-link prev" id="prevBtn"></button>
+        <button class="next-link next" id="nextBtn"></button>
+      </div>
+    </div>
+    <footer class="foot">
+      <span>AI Build-up 창업 캠프 · 김미연 강사</span>
+      <button class="link" id="resetBtn">입력 초기화</button>
+    </footer>
+  </main>
+</div>
+<div class="toast" id="toast" role="status" aria-live="polite"></div>
+<script src="app.js"></script>
+</body>
+</html>
