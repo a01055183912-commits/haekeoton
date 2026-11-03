@@ -185,3 +185,8 @@ details.ex[open] summary::after{content:"－"}
 @media (max-width:480px){.idcard dl>div{grid-template-columns:1fr;gap:2px}}
 .ex-body th{width:110px}
 @media print{.slide>*:not(.grid){display:none}.grid{display:block}.grid section:last-child{display:none}.card-actions,.tip,.block-title,.slide-head,.lead{display:none}.idcard{border-color:#000}}
+
+.rescue{margin-top:12px;background:#fff;border-left:4px solid var(--red);padding:10px 12px;display:flex;flex-wrap:wrap;gap:6px;align-items:center}
+.rescue b{flex:1 0 100%;font-size:13px;color:var(--navy)}
+.rchip{border:1px solid var(--navy);background:#fff;color:var(--navy);padding:6px 10px;font-size:13.5px;font-weight:600;border-radius:99px}
+.rchip:hover{background:var(--navy);color:#fff}
