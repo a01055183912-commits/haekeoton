@@ -238,3 +238,81 @@ details.ex[open] summary::after{content:"－"}
 .aiq{background:#fff;border:1px dashed var(--red);padding:8px 10px;margin-top:8px!important}
 .flowto{display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap;color:var(--red);font-weight:800;font-size:13.5px}
 .next-link em{font-style:normal;color:var(--red);font-size:12.5px}
+
+/* ---------- v4: PPT 구조 그대로 ---------- */
+.road li{grid-template-columns:60px 1fr}
+.road li .t{grid-column:1}
+.road li b{grid-column:2;color:var(--navy)}
+.road li small{grid-column:2}
+.seg{display:flex;flex-wrap:wrap;gap:6px;align-items:center;margin-bottom:14px;font-size:13px}
+.seg>span{font-weight:800;color:var(--navy);margin-right:2px}
+.seg button{border:1px solid var(--navy);background:#fff;color:var(--navy);padding:7px 11px;font-weight:700;font-size:13px}
+.seg button.on{background:var(--navy);color:#fff}
+.field.y{background:#fffbe0;border:1.5px solid #e9d24a;padding:11px 12px}
+.field.y.filled{background:#fff6b8;border-color:var(--navy)}
+.field.y label{display:flex;flex-wrap:wrap;gap:4px 8px;align-items:baseline}
+.field.y label em{flex:1 0 100%;font-style:normal;font-weight:500;color:var(--muted);font-size:12.5px}
+.yb{background:var(--yellow);color:var(--navy);font-size:11.5px;font-weight:800;padding:1px 7px;border:1px solid #d9bf2a}
+.cchips{display:flex;flex-wrap:wrap;gap:6px;margin-top:8px}
+.formula{background:#fff;border:1.5px solid var(--navy);border-left:8px solid var(--red);padding:12px 16px;margin:0 0 16px}
+.formula b{color:var(--red);font-size:13px}
+.formula p{margin:2px 0 4px;font-weight:800;color:var(--navy);font-size:clamp(15px,2vw,18px);line-height:1.45}
+.formula small{color:var(--muted);font-size:13px}
+.why{margin-top:22px;background:#fff;border:1px solid var(--line);padding:14px 16px}
+.why dl{margin:0;display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));gap:10px 18px}
+.why dt{font-weight:800;color:var(--navy);font-size:14px}
+.why dd{margin:2px 0 0;font-size:13.5px;color:var(--muted)}
+.todo{margin-top:16px;background:#fff;border-left:4px solid var(--yellow);padding:12px 14px}
+.todo ul{list-style:none;margin:6px 0 0;padding:0;display:flex;flex-direction:column;gap:8px}
+.todo label,.cb{display:flex;gap:9px;align-items:flex-start;font-size:14px;cursor:pointer;line-height:1.45}
+.todo input,.cb input{margin-top:3px;width:17px;height:17px;accent-color:var(--navy);flex:0 0 auto}
+.handoff{margin-top:12px;background:#f4f5f8;border-left:4px solid var(--red);padding:9px 12px;font-size:13.5px;font-weight:700;color:var(--navy)}
+.send-one{display:grid}
+.sendnote a{color:var(--navy);font-weight:700}
+.qcards{display:grid;gap:8px}
+.qc{background:#fff;border:1px solid var(--navy);padding:10px 12px;display:flex;flex-direction:column;gap:2px}
+.qc b{color:var(--red);font-size:13px}.qc strong{color:var(--navy);font-size:14.5px}.qc small{color:var(--muted);font-size:12.5px}
+.sample .bub{background:#fff;border-left:4px solid var(--navy)}
+.bub .star td{background:#fff6b8}
+.bub .hl{background:var(--yellow);color:var(--navy);font-weight:800;padding:8px 10px;margin:8px 0 0}
+.bub th[colspan]{text-align:center}
+.bub td b{color:var(--red)}
+.dl{margin:0}.dl dt{font-weight:800;color:var(--navy);margin-top:8px}.dl dd{margin:2px 0 0}
+.stages{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
+@media (max-width:760px){.stages{grid-template-columns:1fr}}
+.stg{background:#fff;border:1px solid var(--navy);border-top:5px solid var(--navy);padding:12px 14px}
+.stg:nth-child(2){border-top-color:var(--red)}.stg:nth-child(3){border-top-color:#caa700}
+.stg b{color:var(--navy)}.stg p{margin:4px 0;font-weight:700;font-size:14.5px}.stg small{color:var(--muted);font-size:13px}
+.tipline{margin:12px 0 0;background:#fff;border-left:4px solid var(--yellow);padding:9px 12px;font-size:14px}
+.three{list-style:none;margin:0;padding:0;display:grid;gap:8px;counter-reset:n}
+.three li{counter-increment:n;background:#fff;border:1px solid var(--line);padding:11px 14px 11px 52px;position:relative;display:flex;flex-direction:column;gap:2px}
+.three li::before{content:counter(n);position:absolute;left:14px;top:50%;transform:translateY(-50%);width:28px;height:28px;border-radius:50%;background:var(--navy);color:#fff;font-weight:800;display:flex;align-items:center;justify-content:center}
+.three li b{color:var(--navy)}.three li span{color:var(--muted);font-size:13.5px}
+.vs{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.vs>div{padding:14px;border:1px solid var(--line);background:#fff;display:flex;flex-direction:column;gap:4px}
+.vs small{color:var(--muted);font-weight:700}.vs b{font-size:18px}
+.vs-a b{color:var(--slate)}.vs-b{border:1.5px solid var(--navy)}.vs-b b{color:var(--red)}
+.two{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:12px}
+@media (max-width:760px){.two,.vs{grid-template-columns:1fr}}
+.two>div{background:#fff;border:1px solid var(--line);padding:12px 14px}
+.two h4{margin:0 0 6px;font-size:15px}
+.two ul{margin:0;padding-left:18px;font-size:14px}.two li{margin:4px 0}
+.can h4{color:var(--navy)}.cant h4{color:var(--red)}
+.bad .q{margin:4px 0;font-weight:800;font-size:17px;color:var(--slate)}
+.good{border:1.5px solid var(--navy)!important}.good h4{color:var(--navy)}
+.good dl{margin:0;font-size:14px}.good dt{font-weight:800;color:var(--red);font-size:12.5px;margin-top:6px}.good dd{margin:0}
+.two small{color:var(--muted);display:block;margin-top:8px}
+.cells{display:flex;flex-direction:column;gap:2px;align-items:stretch}
+.cell{background:#fff;border:1px solid var(--navy);border-left:8px solid var(--navy);padding:11px 16px}
+.cell small{color:var(--red);font-weight:800}.cell p{margin:2px 0 0;font-weight:600}
+.cells .cell:nth-of-type(2){border-left-color:var(--red)}.cells .cell:nth-of-type(3){border-left-color:#caa700}.cells .cell:nth-of-type(4){border-left-color:var(--slate)}
+.darr{text-align:center;color:var(--red);font-weight:800;line-height:1}
+.ptable{width:100%;border-collapse:collapse;font-size:13.5px;background:#fff}
+.ptable th{background:var(--navy);color:#fff;text-align:left;padding:8px 10px}
+.ptable td{border:1px solid var(--line);padding:8px 10px;vertical-align:top}
+.ptable td.k{font-weight:800;color:var(--navy);white-space:nowrap}
+.btn-sm.yel{background:var(--yellow);color:var(--navy);border-color:var(--yellow)}
+.pbox-head .btn-sm{padding:4px 10px}
+.chip small{max-width:140px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.chip.on small{max-width:220px}
+@media print{#chain,.seg{display:none}}
