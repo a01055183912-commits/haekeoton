@@ -336,3 +336,6 @@ details.ex[open] summary::after{content:"－"}
   #cardWrap{position:absolute;left:0;top:0;width:100%;border-color:#000}
 }
 .field label em{display:block;font-style:normal;font-weight:500;color:var(--muted);font-size:12.5px;margin-top:1px}
+
+.grid.one{grid-template-columns:1fr}
+.after .grid{margin-top:4px}
