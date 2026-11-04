@@ -277,6 +277,18 @@
       return h + '</div>';
     }).join('');
   }
+  function altBox() {
+    var rows = [['alt_name', '이름·나이', '김하늘 · 22'], ['alt_situ', '상황', '광주에 사는 대학생, 친구와 1박 2일 여수 여행 중'], ['alt_lack', '요즘 가장 부족한 것', '골목 가게들의 진짜 이야기']];
+    return '<div class="alt"><h4>다른 페르소나, 내가 직접 만들어 보기</h4><p>AI가 만든 사람이 마음에 안 들면, 내가 쓴 사람으로 바꿔 이어가요.</p>' +
+      rows.map(function (r) {
+        return '<div class="alt-row"><label for="f_' + r[0] + '">' + r[1] + '</label><div class="gline"><input id="f_' + r[0] + '" data-k="' + r[0] + '" type="text" value="' + esc(V()[r[0]] || '') + '" placeholder=" " autocomplete="off"><span class="ghost">예시 ' + esc(r[2]) + '</span></div></div>';
+      }).join('') +
+      '<button class="sbtn copy" data-act="copyalt">📋 내 페르소나 복사</button><small>복사해서 <b>같은 대화창</b>에 붙여넣으면 이 사람으로 바뀌어요.</small></div>';
+  }
+  function altText() {
+    function g(k) { return val(k) || '(없음)'; }
+    return '페르소나를 내가 만든 사람으로 바꿀게. 이 사람으로 이어서 가자.\n이름·나이: ' + g('alt_name') + '\n상황: ' + g('alt_situ') + '\n요즘 가장 부족한 것: ' + g('alt_lack') + '\n아래 예시 형식 그대로 한 줄로 정리해 줘. 빠진 곳은 네가 가정해서 채우고, 되묻지 말고 바로 써 줘.\n예시) 이름 김하늘 / 나이 22 / 상황 광주에 사는 대학생, 친구와 1박 2일 여수 여행 중 / 요즘 가장 부족한 것 골목 가게들의 진짜 이야기';
+  }
   function sendHtml(p) {
     var first = p.id === 'p1';
     var rescue = p.rescue.map(function (r) { return '<button class="rchip" data-copy="' + esc(r) + '">' + esc(r) + '</button>'; }).join('');
@@ -286,7 +298,7 @@
           '<p class="sendnote">버튼을 누르면 <b>자동 복사</b>되고 새 대화창이 열립니다. Gemini는 붙여넣기(Ctrl+V)가 필요해요.</p>'
         : '<div class="send-one"><button class="sbtn copy" data-act="copy">📋 복사하기</button></div>' +
           '<p class="sendnote"><b>같은 대화창</b>에 붙여넣으세요(Ctrl+V). 새 대화를 열면 AI가 앞의 답을 잊습니다.<br>대화창을 닫았다면: <a href="#" data-act="chatgpt">ChatGPT</a> · <a href="#" data-act="gemini">Gemini</a> · <a href="#" data-act="claude">Claude</a></p>') +
-      '<div class="rescue"><b>마음에 안 들면 (누르면 복사)</b>' + rescue + '</div></div>';
+      '<div class="rescue"><b>마음에 안 들면 (누르면 복사)</b>' + rescue + '</div>' + (first ? altBox() : '') + '</div>';
   }
   function sampleHtml(p) {
     return '<details class="aiex sample"' + (demo ? ' open' : '') + '><summary>' + esc(p.sampleTitle) + ' — 예시 보기</summary><div class="aiex-body"><div class="bub ai">' + S[p.sample] + '</div></div></details>';
@@ -351,6 +363,7 @@
     if (kind === 'print') return window.print();
     if (kind === 'exitdemo') { demo = false; go('p1'); return; }
     if (kind === 'rmimg') { cardImg = ''; try { localStorage.removeItem(KEY + '.img'); } catch (e) {} var tc0 = $('threeCard'); if (tc0) tc0.innerHTML = ideaCard(); return; }
+    if (kind === 'copyalt') { if (!val('alt_name') && !val('alt_situ') && !val('alt_lack')) { toast('먼저 한 칸이라도 써 주세요 — 옆의 예시처럼요'); return; } return copyText(altText()).then(function () { toast('내 페르소나를 복사했어요 → 같은 대화창에 붙여넣기'); }, function () { toast('복사에 실패했어요'); }); }
     if (kind === 'copy3') return copyText(cardText()).then(function () { toast('아이디어 발굴 카드를 복사했어요'); }, function () { toast('복사에 실패했어요'); });
     var text = plain(id), n = blanks(id), first = id === 'p1';
     var copied = copyText(text);

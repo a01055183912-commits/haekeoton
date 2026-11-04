@@ -354,3 +354,19 @@ details.ex[open] summary::after{content:"－"}
 .pcard-live th{width:128px;text-align:left;color:var(--red);font-size:12.5px;padding:7px 10px;border-bottom:1px solid var(--line);vertical-align:top}
 .pcard-live td{padding:7px 10px;border-bottom:1px solid var(--line);font-weight:600;color:var(--navy)}
 .pcard-live tr:last-child th,.pcard-live tr:last-child td{border-bottom:0}
+
+/* ---------- 다른 페르소나 직접 만들기 (예시는 글을 넣으면 사라짐) ---------- */
+.alt{margin-top:14px;background:#fff;border:1.5px solid var(--navy);border-left:6px solid var(--red);padding:12px 14px}
+.alt h4{margin:0 0 2px;font-size:15px;color:var(--navy)}
+.alt>p{margin:0 0 10px;font-size:13px;color:var(--muted)}
+.alt-row{margin-bottom:10px}
+.alt-row label{display:block;font-weight:800;font-size:13px;color:var(--navy);margin-bottom:3px}
+.gline{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:10px;align-items:center}
+@media (max-width:560px){.gline{grid-template-columns:1fr;gap:4px}}
+.gline input{width:100%;font:inherit;font-size:15px;padding:9px 11px;border:1px solid var(--line);background:#fff;border-radius:0}
+.gline input:focus{outline:none;border-color:var(--navy);box-shadow:0 0 0 3px rgba(22,41,74,.14)}
+.gline input:not(:placeholder-shown){border-color:var(--navy);background:#fffbe0}
+.gline .ghost{color:#9a9a96;font-size:13px;font-style:italic;line-height:1.4;word-break:keep-all}
+.gline input:not(:placeholder-shown)+.ghost{display:none}
+.alt .sbtn{width:100%;margin-top:4px}
+.alt small{display:block;margin-top:6px;color:var(--muted);font-size:12.5px}
