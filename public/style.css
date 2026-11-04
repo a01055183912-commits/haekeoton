@@ -339,3 +339,18 @@ details.ex[open] summary::after{content:"－"}
 
 .grid.one{grid-template-columns:1fr}
 .after .grid{margin-top:4px}
+
+/* ---------- 내 페르소나 만들기 ---------- */
+.field.q{background:#fff;border:1px solid var(--line);padding:11px 12px}
+.field.q.filled{border-color:var(--navy)}
+.field.q label{display:flex;gap:10px;align-items:flex-start;line-height:1.4}
+.field.q .qn{flex:0 0 auto;width:24px;height:24px;border-radius:50%;background:var(--navy);color:#fff;font-size:13px;display:inline-flex;align-items:center;justify-content:center;margin-top:1px}
+.field.q.filled .qn{background:var(--red)}
+.field.q label em{display:block}
+.field.q input{margin-top:2px}
+.pcard-live{background:#fff;border:1.5px solid var(--navy);padding:0}
+.pcard-live>b{display:block;background:var(--navy);color:#fff;padding:7px 12px;font-size:13.5px}
+.pcard-live table{width:100%;border-collapse:collapse;font-size:14px}
+.pcard-live th{width:128px;text-align:left;color:var(--red);font-size:12.5px;padding:7px 10px;border-bottom:1px solid var(--line);vertical-align:top}
+.pcard-live td{padding:7px 10px;border-bottom:1px solid var(--line);font-weight:600;color:var(--navy)}
+.pcard-live tr:last-child th,.pcard-live tr:last-child td{border-bottom:0}

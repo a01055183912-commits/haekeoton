@@ -18,8 +18,12 @@
   var PEOPLE = ['대학생', '중장년', '여행 온 대학생', '가게 사장님', '자취생'];
 
   var F = {
-    p1_who: { label: '사람', ph: '대학생', hint: '페르소나가 될 사람' },
-    p1_cat: { label: '카테고리', ph: '여수 오래된 골목 구경', hint: '주제 1은 생활 분야, 주제 2는 이야기가 있는 장소' },
+    p1_who: { label: '사람', q: '그 분야에서 내 고객이 될 사람은 누구인가요?', ph: '대학생', hint: '페르소나가 될 사람' },
+    p1_cat: { label: '카테고리', q: '어떤 분야(카테고리)의 이야기인가요?', ph: '여수 오래된 골목 구경', hint: '주제 1은 생활 분야, 주제 2는 이야기가 있는 장소' },
+    ps_name: { label: '이름·나이', q: '그 사람에게 이름과 나이를 붙여 보세요.', ph: '김하늘 · 22' },
+    ps_situ: { label: '상황', q: '지금 어떤 상황에 있나요?', ph: '광주에 사는 대학생, 친구와 1박 2일 여수 여행 중' },
+    ps_lack: { label: '부족한 것', q: '요즘 가장 부족하거나 바라는 것은 무엇인가요?', ph: '골목 가게들의 진짜 이야기' },
+    j_hint: { label: '먼저 떠올린 불편', opt: true, q: '이 사람이 하루 중 가장 힘들 것 같은 순간이 있다면? (선택)', ph: '가게 앞을 그냥 지나칠 때' },
     p3_pick: { label: '방금 고른 불편', def: '방금 고른 불편', ph: '3번 불편', hint: '다른 불편으로 가고 싶을 때만 "3번 불편"처럼' },
     p4_dir: { label: '방향', hint: '주제 2는 그대로, 주제 1이면 아래 문구' }
   };
@@ -30,6 +34,19 @@
       '나는 {{p1_who}}이고, {{p1_cat}}에 관심이 있어.\n' +
       '이 카테고리의 고객 페르소나 한 명을 아래 예시 형식으로 만들어 줘. 모자란 건 네가 가정해서 채우고, 되묻지 말고 바로 써 줘.\n' +
       '예시) 이름 김하늘 / 나이 22 / 상황 광주에 사는 대학생, 친구와 1박 2일 여수 여행 중 / 요즘 가장 부족한 것 골목 가게들의 진짜 이야기',
+    p1m:
+      '내가 만들려는 창업 아이디어의 고객과 분야야.\n고객: {{p1_who}}\n분야: {{p1_cat}}\n' +
+      '아래는 내가 직접 만든 이 고객의 페르소나야.\n' +
+      '이름·나이: {{ps_name}}\n상황: {{ps_situ}}\n요즘 가장 부족한 것: {{ps_lack}}\n' +
+      '이 페르소나를 아래 예시 형식 그대로 정리해 줘. 빠지거나 어색한 곳은 네가 가정해서 고치고, 무엇을 고쳤는지 한 줄로 알려 줘. 되묻지 말고 바로 써 줘.\n' +
+      '예시) 이름 김하늘 / 나이 22 / 상황 광주에 사는 대학생, 친구와 1박 2일 여수 여행 중 / 요즘 가장 부족한 것 골목 가게들의 진짜 이야기',
+    p2m:
+      '이 페르소나의 고객 여정 지도를 전·중·후 5단계 표로 만들어 줘.\n' +
+      '페르소나) 이름·나이 {{ps_name}} / 상황 {{ps_situ}} / 요즘 가장 부족한 것 {{ps_lack}}\n' +
+      '내가 먼저 떠올린 불편(참고만 해): {{j_hint}}\n' +
+      '칸: 단계 / 하는 일 / 생각·감정 / 불편한 점. 불편한 점은 단계마다 하나씩 아래 예시처럼 모두 5개를 쓰고, 순서대로 ①~⑤ 번호를 붙여 줘.\n' +
+      '예시) 골목 도착 / 가게들 앞을 걸어 지나감 / "어디가 유명하지?" 막막 / ② 어느 가게가 왜 유명한지 몰라서 그냥 지나친다\n' +
+      '표 아래에 5개 중 가장 자주·크게 겪는 불편 하나를 골라 "고른 불편: " 한 줄로 써 줘.',
     p2:
       '이 페르소나의 고객 여정 지도를 전·중·후 5단계 표로 만들어 줘.\n' +
       '칸: 단계 / 하는 일 / 생각·감정 / 불편한 점. 불편한 점은 단계마다 하나씩 아래 예시처럼 모두 5개를 쓰고, 순서대로 ①~⑤ 번호를 붙여 줘.\n' +
@@ -139,6 +156,7 @@
   /* 예시로 따라가기에 미리 채워지는 값 (골목 라디오) */
   var EXV = {
     p1_who: '대학생', p1_cat: '여수 오래된 골목 구경',
+    ps_name: '김하늘 · 22', ps_situ: '광주에 사는 대학생, 친구와 1박 2일 여수 여행 중', ps_lack: '골목 가게들의 진짜 이야기', j_hint: '가게 앞을 그냥 지나칠 때',
     s1: '여수에 여행 온 대학생은 오래된 골목에서 가게 이야기를 알 길이 없어서 들어가 보지 못하고 그냥 지나친다.',
     s2: '그래서 골목 라디오는 여행 온 대학생에게 AI가 만든 사장님 목소리 30초 이야기를 가게 앞 QR로 들려주어, 그냥 지나치던 가게에 들어가게 해 준다.',
     s3: '골목 라디오는 여행자에게 30초 가게 이야기를 주고, AI 대본·음성과 대학생 인터뷰로 만들어 상인회가 QR로 전달하며, 상인회·지자체 단체 구독 골목당 300만 원 (가정)으로 돈을 번다.',
@@ -147,7 +165,7 @@
 
   /* ---------- 상태 ---------- */
   var KEY = 'aiIdeaStudio.v4';
-  var state = { theme: '2', v: {}, done: {}, last: 'p1' };
+  var state = { theme: '2', pmode: 'mine', v: {}, done: {}, last: 'p1' };
   try { var s0 = JSON.parse(localStorage.getItem(KEY) || 'null'); if (s0 && s0.v) state = s0; } catch (e) {}
   function save() { if (!demo) try { localStorage.setItem(KEY, JSON.stringify(state)); } catch (e) {} }
   var demo = false, demoV = {}, demoDone = {};
@@ -164,22 +182,30 @@
   function startDemo() { demo = true; demoV = JSON.parse(JSON.stringify(EXV)); demoDone = {}; }
 
   /* ---------- 프롬프트 조립 ---------- */
+  function mode() { return state.pmode === 'ai' ? 'ai' : 'mine'; }
+  function tid(id) { return mode() === 'mine' && (id === 'p1' || id === 'p2') ? id + 'm' : id; }
+  function fieldsOf(p) {
+    if (p.id === 'p1') return mode() === 'mine' ? ['p1_cat', 'p1_who', 'ps_name', 'ps_situ', 'ps_lack'] : ['p1_who', 'p1_cat'];
+    if (p.id === 'p2') return mode() === 'mine' ? ['j_hint'] : [];
+    return p.fields;
+  }
   function parts(id) {
+    id = tid(id);
     var tpl = T[id], out = [], re = /\{\{(\w+)\}\}/g, last = 0, m;
     while ((m = re.exec(tpl))) { if (m.index > last) out.push({ t: tpl.slice(last, m.index) }); out.push({ k: m[1] }); last = re.lastIndex; }
     if (last < tpl.length) out.push({ t: tpl.slice(last) });
     return out;
   }
-  function plain(id) { return parts(id).map(function (x) { return x.k ? (eff(x.k) || '[' + F[x.k].label + ']') : x.t; }).join(''); }
+  function plain(id) { return parts(id).map(function (x) { return x.k ? (eff(x.k) || (F[x.k].opt ? '(없음)' : '[' + F[x.k].label + ']')) : x.t; }).join(''); }
   function html(id) {
     return parts(id).map(function (x) {
       if (!x.k) return esc(x.t);
       var v = eff(x.k);
-      return v ? '<mark>' + esc(v) + '</mark>' : '<mark class="blank">[' + esc(F[x.k].label) + ']</mark>';
+      return v ? '<mark>' + esc(v) + '</mark>' : F[x.k].opt ? '<span class="optv">(없음)</span>' : '<mark class="blank">[' + esc(F[x.k].label) + ']</mark>';
     }).join('');
   }
-  function blanks(id) { return parts(id).filter(function (x) { return x.k && !eff(x.k); }).length; }
-  function cntText(n) { return n ? '노란 칸 ' + n + '개 비었어요' : '✓ 바로 복사해도 돼요'; }
+  function blanks(id) { return parts(id).filter(function (x) { return x.k && !eff(x.k) && !F[x.k].opt; }).length; }
+  function cntText(n) { return n ? '비어 있는 칸 ' + n + '개' : '✓ 바로 복사해도 돼요'; }
 
   /* ---------- 라우팅 ---------- */
   var cur = null;
@@ -218,9 +244,29 @@
       '<button data-theme="2" class="' + (state.theme === '2' ? 'on' : '') + '">주제 2 · 스토리텔링 콘텐츠</button></div>';
   }
   function chips(k, list) { return '<div class="cchips">' + list.map(function (x) { return '<button type="button" class="rchip" data-fill="' + k + '" data-v="' + esc(x) + '">' + esc(x) + '</button>'; }).join('') + '</div>'; }
+  function personaCard() {
+    function row(l, k) { return '<tr><th>' + l + '</th><td>' + (val(k) ? esc(val(k)) : '<span class="optv">아직 안 썼어요</span>') + '</td></tr>'; }
+    return '<div class="pcard-live" id="pLive"><b>내 페르소나</b><table>' + row('이름·나이', 'ps_name') + row('상황', 'ps_situ') + row('요즘 가장 부족한 것', 'ps_lack') + '</table></div>';
+  }
+  function qField(k, num) {
+    var f = F[k], v = V()[k] || '';
+    var h = '<div class="field q' + (v ? ' filled' : '') + '"><label for="f_' + k + '"><span class="qn">' + num + '</span><span>' + esc(f.q) + (f.hint && k.indexOf('p1_') === 0 ? '<em>' + esc(f.hint) + '</em>' : '') + '</span></label>' +
+      '<input id="f_' + k + '" data-k="' + k + '" type="text" value="' + esc(v) + '" placeholder="예) ' + esc(f.ph) + '" autocomplete="off">';
+    if (k === 'p1_who') h += chips(k, PEOPLE);
+    if (k === 'p1_cat') h += chips(k, CATS[state.theme]);
+    return h + '</div>';
+  }
+  function modeSeg() {
+    return '<div class="seg" role="group" aria-label="페르소나 만드는 방법"><span>페르소나</span>' +
+      '<button data-pmode="mine" class="' + (mode() === 'mine' ? 'on' : '') + '">내가 직접 만들기</button>' +
+      '<button data-pmode="ai" class="' + (mode() === 'ai' ? 'on' : '') + '">AI가 만들어 주기</button></div>';
+  }
   function fieldsHtml(p) {
-    if (!p.fields.length) return '<div class="nofields">노란 칸 없음 — <b>그대로</b> 같은 대화창에 붙여넣으세요.</div>';
-    return p.fields.map(function (k) {
+    var fl = fieldsOf(p);
+    if (mode() === 'mine' && p.id === 'p1') return fl.map(function (k, i) { return qField(k, i + 1); }).join('') + personaCard();
+    if (mode() === 'mine' && p.id === 'p2') return personaCard() + qField('j_hint', '+');
+    if (!fl.length) return '<div class="nofields">노란 칸 없음 — <b>그대로</b> 같은 대화창에 붙여넣으세요.</div>';
+    return fl.map(function (k) {
       var f = F[k], v = V()[k] || '', ph = k === 'p4_dir' ? THEME_DIR[state.theme] : (def(k) || f.ph);
       var h = '<div class="field y' + (v ? ' filled' : '') + '"><label for="f_' + k + '"><span class="yb">노란 칸</span> ' + esc(f.label) + (f.hint ? '<em>' + esc(f.hint) + '</em>' : '') + '</label>' +
         (k === 'p4_dir' ? '<textarea id="f_' + k + '" data-k="' + k + '" rows="2" placeholder="' + esc(ph) + '">' + esc(v) + '</textarea>' : '<input id="f_' + k + '" data-k="' + k + '" type="text" value="' + esc(v) + '" placeholder="' + (k === 'p3_pick' ? '비워 두면 "' + esc(def(k)) + '"' : '예) ' + esc(ph)) + '" autocomplete="off">');
@@ -269,16 +315,22 @@
       '<div class="card-actions"><button class="sbtn copy" data-act="copy3">📋 카드 글 복사</button><button class="sbtn" data-act="print">🖨 인쇄 / PDF</button></div></section></div></div>';
   }
 
+  function leadOf(p) {
+    if (mode() === 'mine' && p.id === 'p1') return '질문 5개에 답하면 <b>내 페르소나</b>가 만들어집니다. AI는 그 사람을 다듬어 줍니다.';
+    if (mode() === 'mine' && p.id === 'p2') return '내가 만든 페르소나로 <b>고객 여정 지도</b>를 만들어 <b>불편 5개</b>를 찾습니다. 프롬프트는 <b>그대로</b> 보내세요.';
+    return p.lead;
+  }
   function pageHtml(p) {
     var n = blanks(p.id), left = '';
     if (p.theme) left += seg();
-    if (p.fields.length) left += '<h3 class="block-title">① 노란 칸만 내 말로</h3>';
+    if (p.id === 'p1') left += modeSeg();
+    var fl0 = fieldsOf(p), mineP = mode() === 'mine' && (p.id === 'p1' || p.id === 'p2');
+    if (fl0.length) left += '<h3 class="block-title">' + (p.id === 'p1' && mineP ? '① 질문에 답하며 내 페르소나 만들기' : p.id === 'p2' && mineP ? '① 앞에서 만든 내 페르소나' : '① 노란 칸만 내 말로') + '</h3>';
     left += '<div class="fields">' + fieldsHtml(p) + '</div>';
-    var right = '<h3 class="block-title">' + (p.fields.length ? '②' : '①') + ' 프롬프트</h3>' +
+    var right = '<h3 class="block-title">' + (fl0.length ? '②' : '①') + ' 프롬프트</h3>' +
       '<div class="pbox"><div class="pbox-head"><span>프롬프트 ' + p.no + '</span><span class="cnt' + (n ? '' : ' ok') + '" id="cnt">' + cntText(n) + '</span></div><pre class="pre" id="pre">' + html(p.id) + '</pre></div>' + sendHtml(p);
     return '<div class="slide-head"><div><p class="stage-label">' + esc(p.stage) + '</p><h2>' + esc(p.title) + '</h2></div></div>' +
-      '<p class="lead">' + p.lead + '</p>' +
-      (p.card ? '' : '') +
+      '<p class="lead">' + leadOf(p) + '</p>' +
       (p.card ? '<div class="grid one"><section>' + right + '</section></div>' : '<div class="grid"><section>' + left + '</section><section>' + right + '</section></div>') +
       sampleHtml(p) + (p.card ? assembler() : '') +
       '<div class="banner">' + p.banner + '</div>';
@@ -318,7 +370,8 @@
   }
   document.addEventListener('click', function (e) {
     var t = e.target;
-    var fl = t.closest('[data-fill]'); if (fl) { V()[fl.dataset.fill] = fl.dataset.v; save(); var inp = $('f_' + fl.dataset.fill); if (inp) { inp.value = fl.dataset.v; inp.closest('.field').classList.add('filled'); } refreshPrompt(); return; }
+    var fl = t.closest('[data-fill]'); if (fl) { V()[fl.dataset.fill] = fl.dataset.v; save(); var inp = $('f_' + fl.dataset.fill); if (inp) { inp.value = fl.dataset.v; inp.closest('.field').classList.add('filled'); } refreshPrompt(); var pl2 = $('pLive'); if (pl2) pl2.outerHTML = personaCard(); return; }
+    var pm = t.closest('[data-pmode]'); if (pm) { state.pmode = pm.dataset.pmode; save(); render(); return; }
     var th = t.closest('[data-theme]'); if (th) { state.theme = th.dataset.theme; save(); render(); return; }
     var g = t.closest('[data-go]'); if (g && g.dataset.go && !g.disabled) { e.preventDefault(); go(g.dataset.go); return; }
     var rc = t.closest('[data-copy]'); if (rc) { copyText(rc.dataset.copy).then(function () { toast('복사했어요 → AI 대화창에 붙여넣기'); }); return; }
@@ -329,6 +382,7 @@
     V()[k] = e.target.value; save();
     var f = e.target.closest('.field'); if (f) f.classList.toggle('filled', !!e.target.value.trim());
     var tc = $('threeCard'); if (tc && /^s\d$/.test(k)) tc.innerHTML = ideaCard(); else refreshPrompt();
+    var pl = $('pLive'); if (pl) pl.outerHTML = personaCard();
   });
   document.addEventListener('change', function (e) {
     if (e.target.id === 'cardFile' && e.target.files[0]) {
@@ -350,7 +404,7 @@
   $('resetBtn').onclick = function () {
     if (demo) { startDemo(); render(); toast('예시를 처음 상태로 되돌렸어요'); return; }
     if (!confirm('입력한 내용을 모두 지울까요?')) return;
-    state = { theme: state.theme, v: {}, done: {}, last: cur }; save(); render(); toast('초기화했어요');
+    state = { theme: state.theme, pmode: state.pmode, v: {}, done: {}, last: cur }; save(); render(); toast('초기화했어요');
   };
   window.addEventListener('hashchange', route);
   route();
