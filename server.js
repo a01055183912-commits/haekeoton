@@ -23,15 +23,20 @@ http.createServer((req, res) => {
       // 알 수 없는 경로는 앱(index.html)으로
       return fs.readFile(path.join(ROOT, 'index.html'), (e2, d2) => {
         if (e2) { res.writeHead(404); return res.end('Not found'); }
-        res.writeHead(200, { 'Content-Type': TYPES['.html'] }); res.end(d2);
+        res.writeHead(200, { 'Content-Type': TYPES['.html'], 'Cache-Control': 'no-cache' }); res.end(d2);
       });
     }
     const ext = path.extname(file);
-    res.writeHead(200, {
+    // 항상 서버에 새 버전이 있는지 확인(no-cache). 바뀌지 않았으면 304로 가볍게 응답
+    const etag = '"' + data.length + '-' + fs.statSync(file).mtimeMs.toString(16) + '"';
+    const headers = {
       'Content-Type': TYPES[ext] || 'application/octet-stream',
-      'Cache-Control': ext === '.html' ? 'no-cache' : 'public, max-age=3600',
+      'Cache-Control': 'no-cache',
+      'ETag': etag,
       'X-Content-Type-Options': 'nosniff'
-    });
+    };
+    if (req.headers['if-none-match'] === etag) { res.writeHead(304, headers); return res.end(); }
+    res.writeHead(200, headers);
     res.end(data);
   });
 }).listen(PORT, '0.0.0.0', () => console.log('listening on ' + PORT));
