@@ -52,8 +52,17 @@
       '② 운영 방식 — 어떻게 만들어서 전달할 것인가: AI가 하는 일 / 사람이 하는 일 / 고객에게 닿는 길(파트너·채널), 한 줄씩\n' +
       '③ 수익 모델 — 돈은 어떻게 벌 것인가: 구독·건당·단체·광고 중 하나 골라 누가 얼마씩, 그리고 첫 고객 10명을 어디서 찾나\n' +
       '④ 심사위원이 물어볼 질문 2개\n' +
-      '⑤ 30초 소개: "문제 한 문장" + "아이디어 한 문장" + "비즈니스 모델 한 문장([이름]은 [누구]에게 [무엇]을 주고, [어떻게 만들어] 전달하며, [누가 얼마]로 돈을 번다)" 세 문장을 그대로 이어서. 숫자는 (가정)이라고 표시.\n' +
-      '예시) ① 여행 온 대학생에게 가게 앞 QR로 사장님 목소리 30초 이야기를 주어, 몰라서 지나치는 문제를 푼다 ② AI: 인터뷰 질문·대본·음성 생성 / 사람: 대학생 팀이 가게 인터뷰 / 닿는 길: 상인회·관광안내소가 QR 배포 ③ 상인회·지자체 단체 구독, 골목당 300만 원 (가정) · 첫 고객: 상인회 회의 시연 후 가게 10곳 무료 시범 ⑤ 비즈니스 모델 한 문장: 골목 라디오는 여행자에게 30초 가게 이야기를 주고, AI 대본·음성과 대학생 인터뷰로 만들어 상인회가 QR로 전달하며, 상인회 단체 구독 골목당 300만 원 (가정)으로 돈을 번다',
+      '⑤ 아이디어 발굴 카드: 앞의 세 문장을 그대로 이어서 아래 네 줄로 써 줘. 숫자는 (가정)이라고 표시.\n' +
+      '문제: "문제 한 문장"\n' +
+      '그래서 아이디어: "아이디어 한 문장"\n' +
+      '비즈니스 모델: "비즈니스 모델 한 문장([이름]은 [누구]에게 [무엇]을 주고, [어떻게 만들어] 전달하며, [누가 얼마]로 돈을 번다)"\n' +
+      '결말: 이 서비스를 쓴 뒤 고객과 돈 내는 사람이 어떻게 달라지는지 한 줄\n' +
+      '예시) ① 여행 온 대학생에게 가게 앞 QR로 사장님 목소리 30초 이야기를 주어, 몰라서 지나치는 문제를 푼다 ② AI: 인터뷰 질문·대본·음성 생성 / 사람: 대학생 팀이 가게 인터뷰 / 닿는 길: 상인회·관광안내소가 QR 배포 ③ 상인회·지자체 단체 구독, 골목당 300만 원 (가정) · 첫 고객: 상인회 회의 시연 후 가게 10곳 무료 시범 ⑤ 문제: 여수에 여행 온 대학생은 오래된 골목에서 가게 이야기를 알 길이 없어서 들어가 보지 못하고 그냥 지나친다 / 그래서 아이디어: 그래서 골목 라디오는 여행 온 대학생에게 AI가 만든 사장님 목소리 30초 이야기를 가게 앞 QR로 들려주어, 그냥 지나치던 가게에 들어가게 해 준다 / 비즈니스 모델: 골목 라디오는 여행자에게 30초 가게 이야기를 주고, AI 대본·음성과 대학생 인터뷰로 만들어 상인회가 QR로 전달하며, 상인회 단체 구독 골목당 300만 원 (가정)으로 돈을 번다 / 결말: 하늘은 가게에 들어가 이야기를 듣고, 사장님은 손님이 는다',
+    pcard:
+      '위의 [아이디어 발굴 카드]에 들어갈 그림 한 장을 그려 줘.\n' +
+      '장면: 페르소나가 이 서비스를 처음 쓰는 순간. 카드의 "결말"이 느껴지는 장면.\n' +
+      '스타일: 따뜻한 일러스트, 가로 16:9, 그림 안에 글자는 넣지 않기.\n' +
+      '그림을 못 그리는 AI라면, 그림 생성용 문장을 영어 한 단락으로 써 줘.',
     pstar:
       '아래 심사위원 입장에서 이 아이디어의 약점 3개와 물어볼 질문 3개를 써 줘. 앞에서 만든 심사위원 질문 2개도 포함해서.\n' +
       '심사위원: 투자사 대표, 창업 연구소장, IT 기업 매니저, ESG 협회 대표, 지역 진흥원 연구원.\n' +
@@ -91,7 +100,8 @@
       '<dt>② 운영 방식</dt><dd>AI: 인터뷰 질문·대본·사장님 목소리 음성 생성 / 사람: 대학생 팀이 가게 5분 인터뷰, 사장님 확인 / 닿는 길: 상인회·관광안내소가 가게 앞 QR 배포, 인스타 지도</dd>' +
       '<dt>③ 수익 모델</dt><dd>상인회·지자체 단체 구독, 골목당 300만 원 (가정) + 사장님 월 9,900원 (가정) · 첫 고객 10명: 여수 골목 상인회 회의에서 시연 → 가게 10곳 무료 시범 → 쿠폰 사용 수를 보고 유료 전환</dd>' +
       '<dt>④ 심사위원 질문</dt><dd>① 사장님들이 인터뷰에 응할까요? ② 네이버 지도·블로그와 무엇이 다른가요?</dd>' +
-      '<dt>⑤ 30초 = 세 문장</dt><dd>여수에 여행 온 대학생은 오래된 골목에서 가게 이야기를 알 길이 없어서 들어가 보지 못하고 그냥 지나친다. <b>그래서</b> 골목 라디오는 여행 온 대학생에게 AI가 만든 사장님 목소리 30초 이야기를 가게 앞 QR로 들려주어, 그냥 지나치던 가게에 들어가게 해 준다. 골목 라디오는 여행자에게 30초 가게 이야기를 주고, AI 대본·음성과 대학생 인터뷰로 만들어 상인회가 QR로 전달하며, 상인회·지자체 단체 구독 골목당 300만 원 (가정)으로 돈을 번다.</dd></dl>'
+      '<dt>⑤ 아이디어 발굴 카드</dt><dd><b>문제</b> 여수에 여행 온 대학생은 오래된 골목에서 가게 이야기를 알 길이 없어서 들어가 보지 못하고 그냥 지나친다.<br><b>그래서 아이디어</b> 그래서 골목 라디오는 여행 온 대학생에게 AI가 만든 사장님 목소리 30초 이야기를 가게 앞 QR로 들려주어, 그냥 지나치던 가게에 들어가게 해 준다.<br><b>비즈니스 모델</b> 골목 라디오는 여행자에게 30초 가게 이야기를 주고, AI 대본·음성과 대학생 인터뷰로 만들어 상인회가 QR로 전달하며, 상인회·지자체 단체 구독 골목당 300만 원 (가정)으로 돈을 번다.<br><b>결말</b> 하늘은 가게에 들어가 이야기를 듣고, 사장님은 손님이 는다.</dd></dl>',
+    pcard: '<p>장면 예: 여수 골목 가게 안, 사장님이 옛 가게 사진을 보여 주며 이야기하고 여행 온 대학생 둘이 웃으며 듣는다. 벽에는 QR 안내판이 걸려 있다.</p><p class="hl">그림 속 장면이 카드의 결말 한 줄과 이어집니다 — 하늘은 가게에 들어가 이야기를 듣고, 사장님은 손님이 는다</p>'
   };
 
   /* ---------- 단계(페이지) ---------- */
@@ -143,13 +153,23 @@
     {
       id: 'p5', label: '5', crumb: '비즈니스 모델', stage: '3단계 · 비즈니스 모델', title: '프롬프트 5 · 비즈니스 모델 3대 질문', no: '5',
       result: ['결과물', '3대 질문의 답 + 비즈니스 모델 한 문장', '"[이름]은 [누구]에게 [무엇]을 주고, [어떻게 만들어] 전달하며, [누가 얼마]로 돈을 번다"'],
-      lead: '아이디어를 <b>3대 질문</b>으로 사업 모양으로 만들고, <b>30초 소개(세 문장)</b>까지 한 번에 받습니다. 이 프롬프트도 <b>그대로</b>.',
+      lead: '아이디어를 <b>3대 질문</b>으로 사업 모양으로 만들고, <b>아이디어 발굴 카드</b>까지 한 번에 받습니다. 이 프롬프트도 <b>그대로</b>.',
       fields: [], qcards: true,
-      why: [['위의 [아이디어 한 문장]으로', '2단계의 마지막 줄을 먼저 다시 쓰게 합니다'], ['①②③ 3대 질문', '가치 제안 · 운영 방식(AI 칸이 비면 AI 창업이 아닙니다) · 수익 모델'], ['"비즈니스 모델 한 문장"', '누구에게 무엇을, 어떻게 만들어, 누가 얼마 — 세 답을 한 줄로'], ['⑤ 30초 = 세 문장', '문제 → 그래서 아이디어 → 비즈니스 모델. 그대로 이어 읽으면 소개입니다']],
+      why: [['위의 [아이디어 한 문장]으로', '2단계의 마지막 줄을 먼저 다시 쓰게 합니다'], ['①②③ 3대 질문', '가치 제안 · 운영 방식(AI 칸이 비면 AI 창업이 아닙니다) · 수익 모델'], ['"비즈니스 모델 한 문장"', '누구에게 무엇을, 어떻게 만들어, 누가 얼마 — 세 답을 한 줄로'], ['⑤ 아이디어 발굴 카드', '문제 → 그래서 아이디어 → 비즈니스 모델 → 결말, 네 줄을 그대로 이어 붙이면 카드입니다']],
       rescue: ['빠진 칸 채워서 다시', '더 쉽게', '숫자는 (가정)으로 표시해 줘'],
-      check: ['운영 방식에 AI가 하는 일이 있는가 확인', '⑤ 세 문장이 "그래서"로 이어지는가 확인 — 빠진 줄은 그 번호 프롬프트만 다시', '숫자는 전부 (가정)'],
-      handoff: '세 문장(문제 · 그래서 아이디어 · 비즈니스 모델)이 오후에 들고 갈 30초 소개입니다.',
-      banner: '세 질문에 답이 있으면 비즈니스 모델입니다. <em>쓰는 사람과 돈 내는 사람은 다를 수 있습니다</em>', sample: 'p5', sampleTitle: '샘플 답 · 3대 질문과 30초 세 문장'
+      check: ['운영 방식에 AI가 하는 일이 있는가 확인', '⑤ 카드 네 줄(문제 · 그래서 아이디어 · 비즈니스 모델 · 결말)이 "그래서"로 이어지는가 확인 — 빠진 줄은 그 번호 프롬프트만 다시', '숫자는 전부 (가정)'],
+      handoff: '카드 네 줄이 오후에 들고 갈 아이디어 발굴 카드입니다. 그림은 다음 장에서 만듭니다.',
+      banner: '세 질문에 답이 있으면 비즈니스 모델입니다. <em>쓰는 사람과 돈 내는 사람은 다를 수 있습니다</em>', sample: 'p5', sampleTitle: '샘플 답 · 3대 질문과 아이디어 발굴 카드'
+    },
+    {
+      id: 'pcard', label: '카드', crumb: '마무리', stage: '마무리 · 아이디어 발굴 카드', title: '프롬프트 카드 · 카드 그림 (선택)', no: '카드',
+      lead: '프롬프트 5가 만든 <b>아이디어 발굴 카드</b>에 어울리는 <b>그림 한 장</b>을 받습니다. 그림이 나오는 AI에서 <b>그대로</b> 보내세요.',
+      fields: [],
+      why: [['위의 [아이디어 발굴 카드]에', '카드의 네 줄을 먼저 읽고 장면을 만듭니다'], ['처음 쓰는 순간', '고객이 서비스를 만나는 한 장면이 그림이 됩니다'], ['"결말"이 느껴지는 장면', '카드의 마지막 줄이 그림의 마음입니다'], ['글자는 넣지 않기', 'AI 그림 속 글자는 깨지기 쉽습니다. 글은 카드에 있습니다']],
+      rescue: ['더 따뜻하게 다시', '장면을 하나 더', '더 쉽게'],
+      check: ['그림이 나오지 않는 AI라면 "그림 생성용 문장" 영어 한 단락을 받아 그림이 되는 AI에 붙여넣기', '나온 그림을 저장해 마무리 화면의 카드에 넣기'],
+      handoff: '',
+      banner: '글은 카드에, <em>장면은 그림에</em> — 마무리 화면에서 한 장으로 모읍니다', sample: 'pcard', sampleTitle: '샘플 · 그림 장면 (골목 라디오)'
     },
     {
       id: 'pstar', label: '★', crumb: '마무리', stage: '마무리', title: '프롬프트 ★ · 심사위원 입장 약점 점검', no: '★',
@@ -164,10 +184,10 @@
     { id: 'end', label: '마무리', crumb: '마무리', title: '한 바퀴 완성' }
   ];
   var IDX = {}; PAGES.forEach(function (p, i) { IDX[p.id] = i; });
-  var PROMPT_IDS = ['p1', 'p2', 'p3', 'p4', 'p5', 'pstar'];
+  var PROMPT_IDS = ['p1', 'p2', 'p3', 'p4', 'p5', 'pcard', 'pstar'];
   var CRUMBS = [['start', 'AI 기본'], ['case', '사례'], ['p1', '문제 정의'], ['p4', '아이디어 도출'], ['p5', '비즈니스 모델'], ['pstar', '마무리']];
-  var CRUMB_OF = { start: 0, case: 1, p1: 2, p2: 2, p3: 2, p4: 3, p5: 4, pstar: 5, end: 5 };
-  var NODES = [['p1', '1 페르소나', '이름 · 나이 · 상황 · 부족한 것'], ['p2', '2 고객 여정 지도', '불편 ①~⑤ · 고른 불편'], ['p3', '3 문제 정의', '문제 한 문장'], ['p4', '4 AI 창업 아이디어', '아이디어 한 문장'], ['p5', '5 비즈니스 모델', '3대 질문 · 30초 소개'], ['pstar', '★ 약점 점검', '(확인 필요)']];
+  var CRUMB_OF = { start: 0, case: 1, p1: 2, p2: 2, p3: 2, p4: 3, p5: 4, pcard: 5, pstar: 5, end: 5 };
+  var NODES = [['p1', '1 페르소나', '이름 · 나이 · 상황 · 부족한 것'], ['p2', '2 고객 여정 지도', '불편 ①~⑤ · 고른 불편'], ['p3', '3 문제 정의', '문제 한 문장'], ['p4', '4 AI 창업 아이디어', '아이디어 한 문장'], ['p5', '5 비즈니스 모델', '3대 질문 · 발굴 카드 네 줄'], ['pcard', '카드 그림', '장면 한 장 (선택)'], ['pstar', '★ 약점 점검', '(확인 필요)']];
   var RESCUE_ALL = ['되묻지 말고 바로 써 줘', '더 쉽게', '다른 걸로 5개 더'];
 
   /* ---------- 상태 ---------- */
@@ -225,7 +245,7 @@
   }
   function renderStepper() {
     $('stepper').innerHTML = PAGES.map(function (p) {
-      var cls = 'chip' + (p.id === cur ? ' on' : '') + (state.done[p.id] ? ' done' : '') + (p.id === 'pstar' || p.id === 'start' || p.id === 'case' || p.id === 'end' ? ' bonus' : '');
+      var cls = 'chip' + (p.id === cur ? ' on' : '') + (state.done[p.id] ? ' done' : '') + (p.id === 'pcard' || p.id === 'pstar' || p.id === 'start' || p.id === 'case' || p.id === 'end' ? ' bonus' : '');
       return '<button class="' + cls + '" data-go="' + p.id + '" role="tab" aria-selected="' + (p.id === cur) + '">' + esc(p.label) + '<small>' + esc(p.title.replace(/^프롬프트 [\d★] · /, '')) + '</small></button>';
     }).join('');
     var on = $('stepper').querySelector('.on'); if (on && on.scrollIntoView) on.scrollIntoView({ inline: 'center', block: 'nearest' });
@@ -336,7 +356,7 @@
       '<div class="stg"><b>1단계 문제 정의</b><p>1 페르소나 → 2 고객 여정 지도 → 3 문제 정의</p><small>불편한 점 5개 → 문제 한 문장</small></div>' +
       '<div class="stg"><b>2단계 아이디어</b><p>4 AI 창업 아이디어 5개</p><small>→ "그래서 …" 아이디어 한 문장</small></div>' +
       '<div class="stg"><b>3단계 비즈니스 모델</b><p>5 가치 제안 · 운영 방식 · 수익 모델</p><small>→ 비즈니스 모델 한 문장</small></div></div>' +
-      '<p class="tipline">한 대화창에서 1번부터 5번까지. 세 문장을 이으면 <b>30초 소개</b>가 됩니다.</p>' +
+      '<p class="tipline">한 대화창에서 1번부터 5번까지. 세 문장에 결말 한 줄을 더하면 <b>아이디어 발굴 카드</b>가 됩니다.</p>' +
       '<h3 class="block-title" style="margin-top:26px">시작 전에 세 가지</h3><ol class="three">' +
       '<li><b>휴대폰 데이터 켜고 AI 앱 하나 열기</b><span>챗GPT, 제미나이, 클로드 중 평소 쓰는 것</span></li>' +
       '<li><b>QR로 프롬프트 스튜디오 열기</b><span>프롬프트 1번부터 5번까지 있습니다. 복사만 하고, 타자는 1번의 노란 칸 두 개뿐</span></li>' +
@@ -370,34 +390,42 @@
       '<div class="stg"><b>3단계 비즈니스 모델</b><p>결과물 비즈니스 모델 한 문장</p><small>"[이름]은 [누구]에게 [무엇]을 주고, [어떻게 만들어] 전달하며, [누가 얼마]로 돈을 번다"<br>프롬프트 5</small></div></div>' +
       '<div class="banner">카테고리와 페르소나가 들어가야 <em>그 사람, 그 분야의 불편</em>이 나옵니다</div>';
   }
-  function threeCard() {
-    var a = val('s1'), b = val('s2'), c = val('s3');
-    var text = [a, b, c].filter(Boolean).join(' ');
-    return '<div class="idcard"><div class="idcard-h"><span>우리 팀 30초 소개</span><small>문제 → 그래서 아이디어 → 비즈니스 모델</small></div><dl>' +
-      '<div><dt>① 문제 한 문장</dt><dd>' + (a ? esc(a) : '<span class="optv">프롬프트 3의 "문제 한 문장"을 붙여넣으세요</span>') + '</dd></div>' +
-      '<div><dt>② 그래서 아이디어 한 문장</dt><dd>' + (b ? esc(b) : '<span class="optv">프롬프트 4의 "아이디어 한 문장"</span>') + '</dd></div>' +
-      '<div><dt>③ 비즈니스 모델 한 문장</dt><dd>' + (c ? esc(c) : '<span class="optv">프롬프트 5의 "비즈니스 모델 한 문장"</span>') + '</dd></div></dl></div>' + (text ? '' : '');
+  var cardImg = ''; try { cardImg = localStorage.getItem(KEY + '.img') || ''; } catch (e) {}
+  function cardLines() {
+    return [['문제', val('s1'), '프롬프트 3 맨 아래 "문제 한 문장"'], ['그래서 아이디어', val('s2'), '프롬프트 4 "아이디어 한 문장"'], ['비즈니스 모델', val('s3'), '프롬프트 5 "비즈니스 모델 한 문장"']];
   }
-  function threeText() { return [val('s1'), val('s2'), val('s3')].filter(Boolean).join(' '); }
+  function ideaCard() {
+    var L = cardLines(), end = val('s4');
+    return '<div class="icard" id="cardWrap"><h4 class="icard-t">아이디어 발굴 카드</h4><div class="icard-b">' +
+      '<figure class="icard-img">' + (cardImg ? '<img src="' + cardImg + '" alt="카드 그림">' : '<div class="icard-ph">프롬프트 카드로 받은 그림을<br>아래 "그림 넣기"로 넣으세요</div>') +
+      '<figcaption>' + (end ? '결말 — ' + esc(end) : '<span class="optv">결말 한 줄이 여기에 들어가요</span>') + '</figcaption></figure>' +
+      '<div class="icard-txt">' + L.map(function (l) { return '<p><b>' + l[0] + '</b>' + (l[1] ? esc(l[1]) : '<span class="optv">' + l[2] + '을 붙여넣으세요</span>') + '</p>'; }).join('') + '</div></div></div>';
+  }
+  function cardText() {
+    var L = cardLines(), t = ['[아이디어 발굴 카드]'];
+    L.forEach(function (l) { t.push(l[0] + ': ' + (l[1] || '(아직 없음)')); });
+    t.push('결말: ' + (val('s4') || '(아직 없음)')); return t.join('\n');
+  }
   function endHtml() {
-    var rows = [['1 페르소나', '이름 · 나이 · 상황 · 부족한 것', '내 카테고리의 사람인가'], ['2 고객 여정 지도', '5단계 표, 불편 ①~⑤ + "고른 불편" 한 줄', '감정이 보이는가'], ['3 문제 한 문장', '"[누가]는 [상황에서] [무엇 때문에] [무엇을 못 한다]"', '네 칸이 다 찼는가'], ['4 아이디어 한 문장', '표 5줄 + "그래서 [이름]은 …"', 'AI가 하는 일이 분명한가'], ['5 비즈니스 모델', '3대 질문 답 · 심사위원 질문 · 세 문장(문제 → 그래서 아이디어 → 비즈니스 모델)', '운영 방식에 AI가 하는 일이 있는가']];
+    var rows = [['1 페르소나', '이름 · 나이 · 상황 · 부족한 것', '내 카테고리의 사람인가'], ['2 고객 여정 지도', '5단계 표, 불편 ①~⑤ + "고른 불편" 한 줄', '감정이 보이는가'], ['3 문제 한 문장', '"[누가]는 [상황에서] [무엇 때문에] [무엇을 못 한다]"', '네 칸이 다 찼는가'], ['4 아이디어 한 문장', '표 5줄 + "그래서 [이름]은 …"', 'AI가 하는 일이 분명한가'], ['5 비즈니스 모델', '3대 질문 답 · 심사위원 질문 · 아이디어 발굴 카드(문제 → 그래서 아이디어 → 비즈니스 모델 → 결말)', '운영 방식에 AI가 하는 일이 있는가']];
     var frame = '나는 [누구]이고, [카테고리]에 관심이 있어.\n[해 줄 일]을 해 줘.\n[5개 / 표로 / 칸: ___ / 세 문장]으로.\n예시) [원하는 답의 모양 한 줄]\n되묻지 말고 바로 써 줘.';
     return '<div class="slide-head"><div><p class="stage-label">마무리</p><h2>한 바퀴 완성</h2></div></div>' +
-      '<div class="formula"><b>결과물</b><p>오후에 들고 갈 세 문장</p><small>문제 한 문장 · 그래서 아이디어 한 문장 · 비즈니스 모델 한 문장 = 30초 소개</small></div>' +
+      '<div class="formula"><b>결과물</b><p>오후에 들고 갈 아이디어 발굴 카드</p><small>문제 한 문장 · 그래서 아이디어 한 문장 · 비즈니스 모델 한 문장 + 결말 한 줄 + 그림 한 장</small></div>' +
       '<h3 class="block-title" style="margin-top:22px">다섯 줄이 다 찼나요</h3><div class="tblwrap"><table class="ptable chk"><tr><th>프롬프트</th><th>내 대화창에 남은 것</th><th>확인</th></tr>' +
       rows.map(function (r, i) { return '<tr><td class="k">' + r[0] + '</td><td>' + r[1] + '</td><td><label class="cb"><input type="checkbox" data-chk="end' + i + '"' + (state.checks['end' + i] ? ' checked' : '') + '><span>' + r[2] + '</span></label></td></tr>'; }).join('') + '</table></div>' +
-      '<p class="tipline">세 문장이 <b>"그래서"</b>로 이어지면 완성. 빠진 줄은 그 번호 프롬프트만 다시.</p>' +
-      '<div class="grid" style="margin-top:22px"><section><h3 class="block-title">내 세 문장 모으기 <span class="rule">선택</span></h3><div class="fields">' +
-      [['s1', '① 문제 한 문장', '프롬프트 3 맨 아래 "문제 한 문장"'], ['s2', '② 아이디어 한 문장', '프롬프트 4 "아이디어 한 문장"'], ['s3', '③ 비즈니스 모델 한 문장', '프롬프트 5 "비즈니스 모델 한 문장"']].map(function (f) {
-        return '<div class="field' + (val(f[0]) ? ' filled' : '') + '"><label for="f_' + f[0] + '">' + f[1] + '<em>' + f[2] + '을 복사해 붙여넣기</em></label><textarea id="f_' + f[0] + '" data-k="' + f[0] + '" rows="3"' + '>' + esc(state.v[f[0]] || '') + '</textarea></div>';
-      }).join('') + '</div></section><section><h3 class="block-title">오후에 들고 갈 카드</h3><div id="threeCard">' + threeCard() + '</div>' +
-      '<div class="card-actions"><button class="sbtn copy" data-act="copy3">📋 30초 소개 복사</button><button class="sbtn" data-act="print">🖨 인쇄 / PDF</button></div></section></div>' +
-      '<div class="why" style="margin-top:26px"><h3 class="block-title navy">프롬프트 ★ · 약점 점검도 해 보세요</h3><p style="margin:0 0 10px;font-size:14.5px">심사위원이 되어 약점 3개와 질문 3개를 던지게 합니다.</p><button class="btn-sm" data-go="pstar">프롬프트 ★ 열기 ›</button></div>' +
+      '<p class="tipline">카드의 세 문장이 <b>"그래서"</b>로 이어지면 완성. 빠진 줄은 그 번호 프롬프트만 다시.</p>' +
+      '<div class="grid" style="margin-top:22px"><section><h3 class="block-title">내 아이디어 발굴 카드 만들기 <span class="rule">프롬프트 5의 ⑤에서 복사</span></h3><div class="fields">' +
+      [['s1', '문제', '카드의 "문제:" 줄'], ['s2', '그래서 아이디어', '카드의 "그래서 아이디어:" 줄'], ['s3', '비즈니스 모델', '카드의 "비즈니스 모델:" 줄'], ['s4', '결말 (한 줄)', '카드의 "결말:" 줄']].map(function (f) {
+        return '<div class="field' + (val(f[0]) ? ' filled' : '') + '"><label for="f_' + f[0] + '">' + f[1] + '<em>' + f[2] + '을 복사해 붙여넣기</em></label><textarea id="f_' + f[0] + '" data-k="' + f[0] + '" rows="' + (f[0] === 's4' ? 2 : 3) + '"' + '>' + esc(state.v[f[0]] || '') + '</textarea></div>';
+      }).join('') + '</div></section><section><h3 class="block-title">오후에 들고 갈 카드</h3><div id="threeCard">' + ideaCard() + '</div>' +
+      '<div class="imgpick"><label class="btn-sm" for="cardFile">🖼 그림 넣기</label><input id="cardFile" type="file" accept="image/*" hidden>' + '<button class="link" data-act="rmimg">그림 빼기</button></div>' +
+      '<div class="card-actions"><button class="sbtn copy" data-act="copy3">📋 카드 글 복사</button><button class="sbtn" data-act="print">🖨 인쇄 / PDF</button></div></section></div>' +
+      '<div class="why" style="margin-top:26px"><h3 class="block-title navy">카드를 더 단단하게</h3><p style="margin:0 0 10px;font-size:14.5px">그림이 필요하면 <b>카드 그림</b>, 약점이 궁금하면 <b>프롬프트 ★</b>를 돌려 보세요.</p><button class="btn-sm" data-go="pcard">카드 그림 ›</button> <button class="btn-sm" data-go="pstar">프롬프트 ★ 약점 점검 ›</button></div>' +
       '<h3 class="block-title" style="margin-top:28px">AI 답을 믿기 전에</h3><ol class="three"><li><b>AI 답은 \'가설\'이다</b><span>진짜인지는 시범 고객과 멘토링에서 확인한다</span></li><li><b>숫자는 출처를 찾는다</b><span>출처가 없으면 (가정)으로 두고 멘토에게 묻는다</span></li><li><b>한 번에 끝내지 않는다</b><span>다시 시키고, 여러 개 받아 고르고, 심사위원이 되어 공격하게 한다</span></li></ol>' +
       '<p class="tipline"><b>AI는 펼치고, 고르는 건 사람입니다.</b></p>' +
       '<h3 class="block-title" style="margin-top:26px">어떤 질문이든 이 틀로</h3><div class="pbox"><div class="pbox-head"><span>내 질문 틀 · 다섯 줄</span><button class="btn-sm yel" data-copy-text="frame">📋 틀 복사</button></div><pre class="pre" style="max-height:none">' + esc(frame) + '</pre></div>' +
       '<p class="tipline">마음에 안 들면: "다른 걸로 5개 더", "더 쉽게". 숫자는 (가정). 오늘 쓴 프롬프트 다섯 개도 모두 이 다섯 줄로 만들었습니다. 특히 <b>예시 한 줄이 답의 모양</b>을 정합니다.</p>' +
-      '<div class="banner">AI는 답을 주는 기계가 아니라, <em>좋은 질문을 할수록 똑똑해지는 동료</em>입니다 · 오후 워크숍에서 팀과 함께 한 바퀴 더</div>';
+      '<div class="banner">AI는 답을 주는 기계가 아니라, <em>좋은 질문을 할수록 똑똑해지는 동료</em>입니다 · 오후 워크숍에서 팀과 함께 한 바퀴 더, 카드를 키워 보세요</div>';
   }
   var FRAME_TEXT = '나는 [누구]이고, [카테고리]에 관심이 있어.\n[해 줄 일]을 해 줘.\n[5개 / 표로 / 칸: ___ / 세 문장]으로.\n예시) [원하는 답의 모양 한 줄]\n되묻지 말고 바로 써 줘.';
 
@@ -414,7 +442,8 @@
   function act(kind) {
     var id = cur;
     if (kind === 'print') return window.print();
-    if (kind === 'copy3') return copyText(threeText()).then(function () { toast('30초 소개를 복사했어요'); }, function () { toast('복사에 실패했어요'); });
+    if (kind === 'rmimg') { cardImg = ''; try { localStorage.removeItem(KEY + '.img'); } catch (e) {} var tc0 = $('threeCard'); if (tc0) tc0.innerHTML = ideaCard(); return; }
+    if (kind === 'copy3') return copyText(cardText()).then(function () { toast('아이디어 발굴 카드를 복사했어요'); }, function () { toast('복사에 실패했어요'); });
     var text = plain(id), n = blanks(id), first = id === 'p1';
     var copied = copyText(text);
     var done = function (msg) { state.done[id] = true; save(); renderStepper(); renderFlow(); toast(msg); };
@@ -444,9 +473,14 @@
     var k = e.target.dataset && e.target.dataset.k; if (!k) return;
     state.v[k] = e.target.value; save();
     var f = e.target.closest('.field'); if (f) f.classList.toggle('filled', !!e.target.value.trim());
-    if (cur === 'end') { var tc = $('threeCard'); if (tc) tc.innerHTML = threeCard(); } else refreshPrompt();
+    if (cur === 'end') { var tc = $('threeCard'); if (tc) tc.innerHTML = ideaCard(); } else refreshPrompt();
   });
-  document.addEventListener('change', function (e) { var c = e.target.dataset && e.target.dataset.chk; if (c) { state.checks[c] = e.target.checked; save(); } });
+  document.addEventListener('change', function (e) {
+    if (e.target.id === 'cardFile' && e.target.files[0]) {
+      var rd = new FileReader();
+      rd.onload = function () { cardImg = rd.result; try { localStorage.setItem(KEY + '.img', cardImg); } catch (er) { toast('그림이 커서 이 화면에서만 보여요(저장은 안 돼요)'); } var tc = $('threeCard'); if (tc) tc.innerHTML = ideaCard(); };
+      rd.readAsDataURL(e.target.files[0]); return;
+    } var c = e.target.dataset && e.target.dataset.chk; if (c) { state.checks[c] = e.target.checked; save(); } });
   document.addEventListener('keydown', function (e) {
     if (!cur || /INPUT|TEXTAREA|SELECT/.test(document.activeElement.tagName)) return;
     var i = IDX[cur];
