@@ -435,3 +435,14 @@ details.ex[open] summary::after{content:"－"}
 .finish .btn-ghost-n{color:#fff;border-color:rgba(255,255,255,.7)}
 .finish .btn-ghost-n:hover{background:rgba(255,255,255,.12)}
 .cover-foot2{text-align:center;color:var(--muted);font-size:13px;margin:0;padding:24px 0 40px}
+
+.sample-img{display:block;width:100%;max-width:720px;height:auto;border:1px solid var(--line);margin:0 0 10px}
+.icard-img img{height:100%;min-height:160px}
+/* 카드: 그림은 위에 가로로 크게, 글은 아래에 */
+.icard-b{grid-template-columns:1fr}
+.icard-img{align-self:auto}
+.icard-img img{width:100%;height:auto;min-height:0;aspect-ratio:16/9;object-fit:cover}
+.icard-ph{height:auto;min-height:0;aspect-ratio:16/9}
+.icard-txt{display:grid;grid-template-columns:1fr 1fr;gap:12px 18px}
+@media (max-width:640px){.icard-txt{grid-template-columns:1fr}}
+@media print{.icard-txt{grid-template-columns:1fr 1fr}}

@@ -119,7 +119,7 @@
       '<dt>③ 수익 모델</dt><dd>상인회·지자체 단체 구독, 골목당 연 300만 원 <b>(가정)</b>: 가게 30곳 이야기 제작 + 1년 운영·수정 2회 포함 / 가게 추가 이야기 월 9,900원 <b>(가정)</b> / 여행자는 무료</dd>' +
       '<dt>④ 심사위원 질문</dt><dd>① 사장님들이 인터뷰에 응할까요? ② 네이버 지도·블로그와 무엇이 다른가요?</dd>' +
       '<dt>⑤ 아이디어 발굴 카드 네 줄</dt><dd><b>문제</b> 여수에 여행 온 대학생은 오래된 골목에서 가게 이야기를 알 길이 없어서 들어가 보지 못하고 그냥 지나친다.<br><b>그래서 아이디어</b> 그래서 골목 라디오는 여행 온 대학생에게 AI가 만든 사장님 목소리 30초 이야기를 가게 앞 QR로 들려주어, 그냥 지나치던 가게에 들어가게 해 준다.<br><b>비즈니스 모델</b> 골목 라디오는 여행자에게 30초 가게 이야기를 주고, AI 대본·음성과 대학생 인터뷰로 만들어 상인회가 QR로 전달하며, 상인회·지자체 단체 구독 골목당 연 300만 원 (가정)으로 돈을 번다.<br><b>결말</b> 하늘은 가게에 들어가 사장님 이야기를 듣고 찐빵을 사고, 사장님은 이야기를 들려줄 자리와 손님이 생긴다.<br><b>오후에 확인할 가설</b> 시범 가게 10곳 앞에서 여행자 30명에게 QR을 보여 주고, 듣고 나서 가게에 들어가는지 센다 — 10명 중 몇 명?</dd></dl>',
-    pcard: '<p>장면 예: 여수 골목 가게 안, 사장님이 옛 가게 사진을 보여 주며 이야기하고 여행 온 대학생 둘이 웃으며 듣는다. 벽에는 QR 안내판이 걸려 있다.</p><p class="hl">그림 속 장면이 카드의 결말과 이어집니다 — 하늘은 가게에 들어가 이야기를 듣고, 사장님은 손님이 는다</p>'
+    pcard: '<img class="sample-img" src="golmok-radio.webp?v=1" alt="골목 라디오 장면 예시" loading="lazy"><p>장면 예: 여수 골목 가게 안, 사장님이 옛 가게 사진을 보여 주며 이야기하고 여행 온 대학생 둘이 웃으며 듣는다. 벽에는 QR 안내판이 걸려 있다.</p><p class="hl">그림 속 장면이 카드의 결말과 이어집니다 — 하늘은 가게에 들어가 이야기를 듣고, 사장님은 손님이 는다</p>'
   };
   /* ★ 약점 점검 샘플 (골목 라디오) */
   S.pstar = '<p><b>1. 구분</b> 내가 제공한 사실: 여행 온 대학생 대상, 가게 앞 QR로 사장님 목소리 30초 / AI가 추가한 가정: 골목당 연 300만 원, 제작 30분 / 고객에게 확인할 내용: 듣고 나서 가게에 들어가는지</p>' +
@@ -311,13 +311,14 @@
 
   /* 카드 */
   var cardImg = ''; try { cardImg = localStorage.getItem(KEY + '.img') || ''; } catch (e) {}
+  function curImg() { return cardImg || (demo ? 'golmok-radio.webp?v=1' : ''); }
   function cardLines() {
     return [['문제', val('s1'), '프롬프트 5 카드의 "문제" 줄'], ['그래서 아이디어', val('s2'), '"그래서 아이디어" 줄'], ['비즈니스 모델', val('s3'), '"비즈니스 모델" 줄'], ['결말', val('s4'), '"결말" 줄']];
   }
   function ideaCard() {
     var L = cardLines(), hyp = val('s5');
     return '<div class="icard" id="cardWrap"><h4 class="icard-t">아이디어 발굴 카드</h4><div class="icard-b">' +
-      '<figure class="icard-img">' + (cardImg ? '<img src="' + cardImg + '" alt="카드 그림">' : '<div class="icard-ph">그림은 선택이에요<br>AI가 그려 준 그림을 넣을 수 있어요</div>') + '</figure>' +
+      '<figure class="icard-img">' + (curImg() ? '<img src="' + curImg() + '" alt="카드 그림">' : '<div class="icard-ph">그림은 선택이에요<br>AI가 그려 준 그림을 넣을 수 있어요</div>') + '</figure>' +
       '<div class="icard-txt">' + L.map(function (l, i) { return '<p><b>' + (i + 1) + ' ' + l[0] + '</b>' + (l[1] ? esc(l[1]) : '<span class="optv">' + l[2] + '</span>') + '</p>'; }).join('') + '</div></div>' +
       '<div class="icard-hyp"><b>오후에 확인할 가설</b>' + (hyp ? esc(hyp) : '<span class="optv">누구에게 / 무엇을 보여 주고 / 어떤 행동을 확인할지</span>') + '</div>' +
       '<p class="icard-note">확인하지 않은 내용은 (가정) · (미확인) 가설로 표시돼요</p></div>';
