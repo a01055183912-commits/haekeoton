@@ -71,6 +71,22 @@
       '④ 심사위원이 물어볼 질문 2개\n' +
       '⑤ 아이디어 발굴 카드 네 줄: 문제 한 문장 / 아이디어 한 문장 / 비즈니스 모델 한 문장([이름]은 [누구]에게 [무엇]을 주고, [어떻게 만들어] 전달하며, [누가 얼마]로 돈을 번다) / 결말 한 문장(주인공이 어떻게 달라지나). 끝에 오후에 확인할 가설 하나를 "누구에게 / 무엇을 보여 주고 / 어떤 행동을 확인할지"로. 숫자는 (가정), 근거 없는 주장은 (미확인) 표시.\n' +
       '예시) ① 여행자: 가게 앞 QR로 사장님 목소리 30초 → 몰라서 지나치는 문제를 푼다 / 상인회: 골목 방문객이 가게 안으로 들어온다(입장 쿠폰 사용 수로 확인) ② AI: 인터뷰 질문·대본·음성 생성 / 사람: 대학생 팀이 가게 인터뷰 / 닿는 길: 상인회·관광안내소가 QR 배포 / AI 효과: 가게 1곳 제작 반나절 → 30분 (가정) ③ 상인회·지자체 단체 구독, 골목당 연 300만 원 (가정) · 첫 고객: 상인회 1곳, 회의 시연 후 가게 10곳 무료 시범 ⑤ 결말: 하늘은 가게에 들어가 이야기를 듣고, 사장님은 손님이 는다 · 확인할 가설: 시범 가게 10곳 앞에서 여행자 30명에게 QR을 보여 주고, 듣고 나서 가게에 들어가는지 센다',
+    p5q:
+      '위의 아이디어 한 문장으로 갈게. 이번에는 네가 바로 답하지 말고, 창업 코치처럼 나에게 질문해 줘.\n' +
+      '규칙: 한 번에 질문 하나만. 내 답을 기다렸다가 다음 질문으로 가. 내 답이 짧거나 막연하면 예시를 하나 들어 한 번만 다시 물어 줘. 내가 "모르겠어"라고 하면 선택지 3개를 줘. 내 답을 네 말로 바꾸지 말고 내 말 그대로 써.\n' +
+      '질문 순서:\n' +
+      '① 가치 제안\n' +
+      '1. 쓰는 사람은 누구이고, 쓰기 전과 후에 무엇이 달라지나?\n' +
+      '2. 돈 내는 사람은 누구이고, 돈을 내고 무엇을 얻나? (쓰는 사람과 다르면 따로)\n' +
+      '② 운영 방식\n' +
+      '3. 결과물 하나를 만들려면 어떤 일이 순서대로 일어나나? 그중 AI가 하는 일과 사람이 꼭 해야 하는 일은?\n' +
+      '4. 고객은 이걸 어디서 처음 만나고(채널), 누가 그 길을 열어 주나(파트너)?\n' +
+      '5. 사람이 직접 할 때보다 AI 덕분에 무엇이 얼마나 좋아지나? (시간·비용·언어 중 하나)\n' +
+      '③ 수익 모델\n' +
+      '6. 구독·건당·단체·광고 중 무엇이고, 누가 얼마를 어떤 기간으로 내나? 그 돈에 무엇이 포함되나?\n' +
+      '7. 돈 내는 첫 고객 1곳을 어디서 어떻게 만나고, 무엇을 보여 주면 결정하겠나?\n' +
+      '8. 가장 큰 비용 하나, 성과를 재는 숫자 하나, 남들이 쉽게 못 따라 하는 것 하나는?\n' +
+      '여덟 개가 끝나면 내 답으로 비즈니스 모델 한 문장과 아이디어 발굴 카드 네 줄(문제 / 그래서 아이디어 / 비즈니스 모델 / 결말)을 정리해 줘. 근거 없는 숫자는 (가정), 확인 안 된 주장은 (미확인). 마지막에 오후에 확인할 가설 하나를 "누구에게 / 무엇을 보여 주고 / 어떤 행동을 확인할지"로 써 줘.',
     pcard:
       '위의 [아이디어 발굴 카드]에 들어갈 그림 한 장을 그려 줘.\n' +
       '장면: 페르소나가 이 서비스를 처음 쓰는 순간. 카드의 "결말"이 느껴지는 장면.\n' +
@@ -119,6 +135,12 @@
       '<dt>③ 수익 모델</dt><dd>상인회·지자체 단체 구독, 골목당 연 300만 원 <b>(가정)</b>: 가게 30곳 이야기 제작 + 1년 운영·수정 2회 포함 / 가게 추가 이야기 월 9,900원 <b>(가정)</b> / 여행자는 무료</dd>' +
       '<dt>④ 심사위원 질문</dt><dd>① 사장님들이 인터뷰에 응할까요? ② 네이버 지도·블로그와 무엇이 다른가요?</dd>' +
       '<dt>⑤ 아이디어 발굴 카드 네 줄</dt><dd><b>문제</b> 여수에 여행 온 대학생은 오래된 골목에서 가게 이야기를 알 길이 없어서 들어가 보지 못하고 그냥 지나친다.<br><b>그래서 아이디어</b> 그래서 골목 라디오는 여행 온 대학생에게 AI가 만든 사장님 목소리 30초 이야기를 가게 앞 QR로 들려주어, 그냥 지나치던 가게에 들어가게 해 준다.<br><b>비즈니스 모델</b> 골목 라디오는 여행자에게 30초 가게 이야기를 주고, AI 대본·음성과 대학생 인터뷰로 만들어 상인회가 QR로 전달하며, 상인회·지자체 단체 구독 골목당 연 300만 원 (가정)으로 돈을 번다.<br><b>결말</b> 하늘은 가게에 들어가 사장님 이야기를 듣고 찐빵을 사고, 사장님은 이야기를 들려줄 자리와 손님이 생긴다.<br><b>오후에 확인할 가설</b> 시범 가게 10곳 앞에서 여행자 30명에게 QR을 보여 주고, 듣고 나서 가게에 들어가는지 센다 — 10명 중 몇 명?</dd></dl>',
+    p5q: '<div class="qa"><p class="q"><b>코치</b> ① 가치 제안 — 1. 쓰는 사람은 누구이고, 쓰기 전과 후에 무엇이 달라지나?</p>' +
+      '<p class="a"><b>나 (예)</b> 여행 온 대학생이에요. 전에는 가게를 그냥 지나쳤는데, 듣고 나면 들어가요.</p>' +
+      '<p class="q"><b>코치</b> 2. 돈 내는 사람은 누구이고, 돈을 내고 무엇을 얻나?</p>' +
+      '<p class="a"><b>나 (예)</b> 상인회요. 골목 방문객이 가게 안으로 들어와요.</p>' +
+      '<p class="dots">… 8번까지 한 번에 하나씩 이어져요. 막히면 "모르겠어" → 선택지 3개 …</p></div>' +
+      '<p class="hl">여덟 개가 끝나면: 비즈니스 모델 한 문장 + 카드 네 줄(문제 / 그래서 아이디어 / 비즈니스 모델 / 결말) + 오후에 확인할 가설 하나 — 내 답 그대로, 근거 없는 숫자는 (가정)</p>',
     pcard: '<img class="sample-img" src="golmok-radio.webp?v=1" alt="골목 라디오 장면 예시" loading="lazy"><p>장면 예: 여수 골목 가게 안, 사장님이 옛 가게 사진을 보여 주며 이야기하고 여행 온 대학생 둘이 웃으며 듣는다. 벽에는 QR 안내판이 걸려 있다.</p><p class="hl">그림 속 장면이 카드의 결말과 이어집니다 — 하늘은 가게에 들어가 이야기를 듣고, 사장님은 손님이 는다</p>'
   };
   /* ★ 약점 점검 샘플 (골목 라디오) */
@@ -170,7 +192,7 @@
 
   /* ---------- 상태 ---------- */
   var KEY = 'aiIdeaStudio.v4';
-  var state = { theme: '2', pmode: 'mine', v: {}, done: {}, last: 'p1' };
+  var state = { theme: '2', pmode: 'mine', p5mode: 'easy', v: {}, done: {}, last: 'p1' };
   try { var s0 = JSON.parse(localStorage.getItem(KEY) || 'null'); if (s0 && s0.v) state = s0; } catch (e) {}
   function save() { if (!demo) try { localStorage.setItem(KEY, JSON.stringify(state)); } catch (e) {} }
   var demo = false, demoV = {}, demoDone = {};
@@ -188,7 +210,8 @@
 
   /* ---------- 프롬프트 조립 ---------- */
   function mode() { return state.pmode === 'ai' ? 'ai' : 'mine'; }
-  function tid(id) { return mode() === 'mine' && (id === 'p1' || id === 'p2') ? id + 'm' : id; }
+  function p5q() { return state.p5mode === 'q'; }
+  function tid(id) { if (id === 'p5' && p5q()) return 'p5q'; return mode() === 'mine' && (id === 'p1' || id === 'p2') ? id + 'm' : id; }
   function fieldsOf(p) {
     if (p.id === 'p1') return mode() === 'mine' ? ['p1_cat', 'p1_who', 'ps_name', 'ps_situ', 'ps_lack'] : ['p1_who', 'p1_cat'];
     if (p.id === 'p2') return mode() === 'mine' ? ['j_hint'] : [];
@@ -296,7 +319,8 @@
   }
   function sendHtml(p) {
     var first = p.id === 'p1';
-    var rescue = p.rescue.map(function (r) { return '<button class="rchip" data-copy="' + esc(r) + '">' + esc(r) + '</button>'; }).join('');
+    var rlist = (p.id === 'p5' && p5q()) ? ['모르겠어', '더 쉽게 물어봐 줘', '예시를 하나 더 보여 줘', '다음 질문으로 넘어가 줘'] : p.rescue;
+    var rescue = rlist.map(function (r) { return '<button class="rchip" data-copy="' + esc(r) + '">' + esc(r) + '</button>'; }).join('');
     return '<div class="send">' +
       (first
         ? '<div class="send-row"><button class="sbtn copy" data-act="copy">📋 복사하기</button><button class="sbtn" data-act="chatgpt"><span class="dot d-gpt"></span>ChatGPT</button><button class="sbtn" data-act="gemini"><span class="dot d-gem"></span>Gemini</button><button class="sbtn" data-act="claude"><span class="dot d-cla"></span>Claude</button></div>' +
@@ -306,7 +330,7 @@
       '<div class="rescue"><b>마음에 안 들면 (누르면 복사)</b>' + rescue + '</div>' + (first ? altBox() : '') + '</div>';
   }
   function sampleHtml(p) {
-    return '<details class="aiex sample"' + (demo ? ' open' : '') + '><summary>' + esc(p.sampleTitle) + ' — 예시 보기</summary><div class="aiex-body"><div class="bub ai">' + S[p.sample] + '</div></div></details>';
+    return '<details class="aiex sample"' + (demo ? ' open' : '') + '><summary>' + esc(p.sampleTitle) + ' — 예시 보기</summary><div class="aiex-body"><div class="bub ai">' + S[(p.id === 'p5' && p5q()) ? 'p5q' : p.sample] + '</div></div></details>';
   }
 
   /* 카드 */
@@ -339,22 +363,34 @@
   function leadOf(p) {
     if (mode() === 'mine' && p.id === 'p1') return '질문 5개에 답하면 <b>내 페르소나</b>가 만들어집니다. AI는 그 사람을 다듬어 줍니다.';
     if (mode() === 'mine' && p.id === 'p2') return '내가 만든 페르소나로 <b>고객 여정 지도</b>를 만들어 <b>불편 5개</b>를 찾습니다. 프롬프트는 <b>그대로</b> 보내세요.';
+    if (p.id === 'p5' && p5q()) return '<b>코치가 한 번에 질문 하나씩</b> 물어봅니다. 내가 답하면 8개 끝에 <b>비즈니스 모델 한 문장과 카드 네 줄</b>이 정리돼요. 프롬프트는 <b>그대로</b> 보내세요.';
     return p.lead;
+  }
+  function p5Seg() {
+    return '<div class="seg" role="group" aria-label="프롬프트 5 버전"><span>방식</span>' +
+      '<button data-p5mode="easy" class="' + (!p5q() ? 'on' : '') + '">쉬운 버전 · 바로 답</button>' +
+      '<button data-p5mode="q" class="' + (p5q() ? 'on' : '') + '">질문 버전 · 코치가 하나씩 묻기</button></div>' +
+      '<p class="modenote">' + (p5q() ? '내 말로 직접 답하며 만들어요. 8개 질문에 답하는 시간이 더 걸려요.' : '한 번 보내면 3대 질문의 답과 카드 네 줄이 바로 나와요.') + '</p>';
+  }
+  function bannerOf(p) {
+    if (p.id === 'p5' && p5q()) return '한 번에 질문 하나 — 막히면 <em>"모르겠어"</em>라고 하면 선택지 3개를 줍니다';
+    return p.banner;
   }
   function pageHtml(p) {
     var n = blanks(p.id), left = '';
     if (p.theme) left += seg();
     if (p.id === 'p1') left += modeSeg();
+    if (p.id === 'p5') left += p5Seg();
     var fl0 = fieldsOf(p), mineP = mode() === 'mine' && (p.id === 'p1' || p.id === 'p2');
     if (fl0.length) left += '<h3 class="block-title">' + (p.id === 'p1' && mineP ? '① 질문에 답하며 내 페르소나 만들기' : p.id === 'p2' && mineP ? '① 앞에서 만든 내 페르소나' : '① 노란 칸만 내 말로') + '</h3>';
     left += '<div class="fields">' + fieldsHtml(p) + '</div>';
     var right = '<h3 class="block-title">' + (fl0.length ? '②' : '①') + ' 프롬프트</h3>' +
-      '<div class="pbox"><div class="pbox-head"><span>프롬프트 ' + p.no + '</span><span class="cnt' + (n ? '' : ' ok') + '" id="cnt">' + cntText(n) + '</span></div><pre class="pre" id="pre">' + html(p.id) + '</pre></div>' + sendHtml(p);
+      '<div class="pbox"><div class="pbox-head"><span>프롬프트 ' + p.no + (p.id === 'p5' ? (p5q() ? ' · 질문 버전' : ' · 쉬운 버전') : '') + '</span><span class="cnt' + (n ? '' : ' ok') + '" id="cnt">' + cntText(n) + '</span></div><pre class="pre" id="pre">' + html(p.id) + '</pre></div>' + sendHtml(p);
     return '<div class="slide-head"><div><p class="stage-label">' + esc(p.stage) + '</p><h2>' + esc(p.title) + '</h2></div></div>' +
       '<p class="lead">' + leadOf(p) + '</p>' +
       (p.card ? '<div class="grid one"><section>' + right + '</section></div>' : '<div class="grid"><section>' + left + '</section><section>' + right + '</section></div>') +
       sampleHtml(p) + (p.card ? assembler() : '') +
-      '<div class="banner">' + p.banner + '</div>';
+      '<div class="banner">' + bannerOf(p) + '</div>';
   }
 
   /* ---------- 복사 · 보내기 ---------- */
@@ -393,6 +429,7 @@
   document.addEventListener('click', function (e) {
     var t = e.target;
     var fl = t.closest('[data-fill]'); if (fl) { V()[fl.dataset.fill] = fl.dataset.v; save(); var inp = $('f_' + fl.dataset.fill); if (inp) { inp.value = fl.dataset.v; inp.closest('.field').classList.add('filled'); } refreshPrompt(); var pl2 = $('pLive'); if (pl2) pl2.outerHTML = personaCard(); return; }
+    var p5m = t.closest('[data-p5mode]'); if (p5m) { state.p5mode = p5m.dataset.p5mode; save(); render(); return; }
     var pm = t.closest('[data-pmode]'); if (pm) { state.pmode = pm.dataset.pmode; save(); render(); return; }
     var th = t.closest('[data-theme]'); if (th) { state.theme = th.dataset.theme; save(); render(); return; }
     var g = t.closest('[data-go]'); if (g && g.dataset.go && !g.disabled) { e.preventDefault(); go(g.dataset.go); return; }
@@ -428,7 +465,7 @@
   $('resetBtn').onclick = function () {
     if (demo) { startDemo(); render(); toast('예시를 처음 상태로 되돌렸어요'); return; }
     if (!confirm('입력한 내용을 모두 지울까요?')) return;
-    state = { theme: state.theme, pmode: state.pmode, v: {}, done: {}, last: cur }; save(); render(); toast('초기화했어요');
+    state = { theme: state.theme, pmode: state.pmode, p5mode: state.p5mode, v: {}, done: {}, last: cur }; save(); render(); toast('초기화했어요');
   };
   window.addEventListener('hashchange', route);
   route();
