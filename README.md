@@ -16,3 +16,11 @@
 - ChatGPT·Claude는 프롬프트가 자동 입력되고, Gemini는 복사 후 붙여넣기(Ctrl+V)가 필요합니다.
 - 입력값은 브라우저(localStorage)에만 저장됩니다.
 - 프롬프트 수정은 `public/app.js`의 `P` 배열(`template`)에서 합니다.
+
+## 접속 비밀번호 (사이트 잠금)
+
+- 비밀번호는 코드에 적지 않고 **Railway 환경변수 `APP_PASSWORD`**로만 설정합니다.
+- Railway → 서비스 → **Variables** → `APP_PASSWORD` = 원하는 비밀번호 → 저장하면 자동으로 다시 배포됩니다.
+- 환경변수가 없으면 사이트 전체가 닫힙니다(`/health` 제외). 비밀번호를 바꾸면 기존 로그인은 모두 풀립니다.
+- 로그인은 12시간 유지됩니다. 같은 IP에서 10분에 30번 이상 틀리면 잠시 막힙니다.
+- 로컬 실행: `APP_PASSWORD=원하는비밀번호 npm start`
